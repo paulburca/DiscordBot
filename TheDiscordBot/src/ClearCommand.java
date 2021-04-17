@@ -1,0 +1,58 @@
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.awt.*;
+import java.util.List;
+
+public class ClearCommand extends ListenerAdapter {
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        String[] commandArguments = event.getMessage().getContentRaw().split("\\s+");
+
+        if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "clear")) {
+            if (commandArguments.length != 2) {
+                EmbedBuilder usage = new EmbedBuilder();
+                usage.setColor(Color.ORANGE);
+                usage.setTitle("Specify amount to delete");
+                usage.setDescription("Usage: '" + BotLauncher.prefix + "clear [number of messages]'");
+                event.getChannel().sendMessage(usage.build()).queue();
+            } else {
+                try {
+
+//                    event.getChannel().getHistory().retrievePast(Integer.parseInt(commandArguments[1]))
+//                            .map(messages -> messages.get(1))
+//                            .queue(message -> System.out.println("Retrieving the first message channel before delete"));
+
+                    List<Message> messages = event.getChannel()
+                            .getHistory()
+                            .retrievePast(Integer.parseInt(commandArguments[1]))
+                            .complete();
+                    event.getChannel().deleteMessages(messages).queue();
+
+                    EmbedBuilder succes = new EmbedBuilder();
+                    succes.setColor(Color.ORANGE);
+                    succes.setTitle("Successfully deleted " + commandArguments[1] + ".");
+                    succes.setDescription("Messages older than 2 weeks can't be deleted.");
+                    event.getChannel().sendMessage(succes.build()).queue();
+
+                } catch (IllegalArgumentException e) {
+                    if (e.toString().startsWith("java.langIllegalArgument.Exception: Message retrieval")) {
+                        EmbedBuilder error = new EmbedBuilder();
+                        error.setColor(Color.ORANGE);
+                        error.setTitle("Too many messages selected.");
+                        error.setDescription("Between 1-100 messages can be deleted one at a time.");
+                        event.getChannel().sendMessage(error.build()).queue();
+                    } else {
+                        EmbedBuilder error = new EmbedBuilder();
+                        error.setColor(Color.ORANGE);
+                        error.setTitle("Selected messages are older that 2 weeks.");
+                        error.setDescription("Messages older stan 2 weeks can't be deleted.");
+                        event.getChannel().sendMessage(error.build()).queue();
+                    }
+                }
+
+            }
+        }
+    }
+}
