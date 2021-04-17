@@ -11,9 +11,10 @@ public class BotLauncher {
     public static void main(String[] args) throws LoginException {
         String token = "ODMyNjU2OTAyMzk5ODUyNTc0.YHm-Kw.ShgtTv6QhmOPYqJyCqZM-F4g5oo";
         // All other events will be disabled.
-        JDABuilder.createLight(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
+        JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES,GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES)
                 .addEventListeners(new GuildMessages())
                 .addEventListeners(new ClearCommand())
+                .addEventListeners(new GuildMemberJoin())
                 .setStatus(OnlineStatus.ONLINE)
                 .setActivity(Activity.watching("the world"))
                 .build();
