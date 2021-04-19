@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.awt.*;
 import java.util.List;
 
-public class ClearCommand extends ListenerAdapter {
+public class CommandHandler extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] commandArguments = event.getMessage().getContentRaw().split("\\s+");
 
@@ -53,6 +53,20 @@ public class ClearCommand extends ListenerAdapter {
                 }
 
             }
+        }
+
+        if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "info")) {
+            EmbedBuilder information = new EmbedBuilder();
+            information.setTitle("(⌐■_■) Information");
+            information.setDescription("content information");
+            information.addField("Creator", "Burcă Paul (paulburca), Filimon Dănuț-Dumitru (Danie83)", false);
+            information.setColor(0xed1313);
+            information.setFooter("fill", event.getMember().getUser().getEffectiveAvatarUrl());
+
+
+            event.getChannel().sendTyping().queue();
+            event.getChannel().sendMessage(information.build()).queue();
+            information.clear();
         }
     }
 }
