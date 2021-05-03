@@ -1,36 +1,42 @@
 import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import org.xml.sax.InputSource;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.InputStream;
 import java.net.URL;
-import java.io.InputStreamReader;
+import java.net.URLConnection;
+import java.util.zip.GZIPInputStream;
 
 public class RSSManager {
-    URL url;
+    URLConnection url;
     SyndFeedInput syndFeedInput;
+    InputStream inputStream;
     SyndFeed syndFeed;
-    public RSSManager(String url){
+    public RSSManager(String url, GuildMessageReceivedEvent event){
         boolean ok = false;
         try {
-            this.url= new URL(url);
+            this.url= new URL(url).openConnection();
+            inputStream = new URL(url).openConnection().getInputStream();
+            if("gzip".equals(this.url.getContentEncoding())){
+                inputStream = new GZIPInputStream(inputStream);
+            }
             syndFeedInput = new SyndFeedInput();
-            syndFeed = syndFeedInput.build(new XmlReader(new File(url)));
+            InputSource inputSource = new InputSource(inputStream);
+            syndFeed = syndFeedInput.build(inputSource);
             ok=true;
         }
         catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("ERROR: "+ex.getMessage());
         }
-        if (!ok) {
-            System.out.println();
-            System.out.println("FeedReader reads and prints any RSS/Atom feed type.");
-            System.out.println("The first parameter must be the URL of the feed to read.");
-            System.out.println();
+        if(ok){
+            for(int i=0;i<5;i++){
+                event.getChannel().sendMessage((String)syndFeed.getLinks().get(i)).queue();
+            }
         }
-
     }
+
 }

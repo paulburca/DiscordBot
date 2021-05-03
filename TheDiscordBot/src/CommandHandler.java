@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 public class CommandHandler extends ListenerAdapter {
@@ -72,24 +73,22 @@ public class CommandHandler extends ListenerAdapter {
         }
         if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "news")) {
             if (commandArguments.length != 2) {
-                try {
-                    URL url=new URL("https://www.news.ro/rss");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                String url="https://www.news.ro/rss";
             }
             else{
-                URL url;
-                try{
-                    switch (commandArguments[1]){
-                        case "sport":url=new URL("https://www.digisport.ro/rss");
-                        case "political":url=new URL("https://www.politico.com/rss");
-                        case "science":url=new URL("https://www.sciencenews.org/feed");
-                        default:event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();
-                    }
-                }catch (MalformedURLException e){
-                    e.printStackTrace();
+                String url = null;
+                switch (commandArguments[1]){
+                    case "sport":url="https://www.digisport.ro/rss"; break;
+                    case "political":url="https://www.politico.com/rss"; break;
+                    case "science":url="https://www.sciencenews.org/feed"; break;
+                    default:event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();break;
                 }
+                if(url!=null){
+                    System.out.println("sarmale");
+                    RSSManager rssManager = new RSSManager(url,event);
+
+                }
+
             }
         }
     }
