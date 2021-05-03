@@ -85,7 +85,7 @@ public class CommandHandler extends ListenerAdapter {
                         case "sport":url=new URL("https://www.digisport.ro/rss");
                         case "political":url=new URL("https://www.politico.com/rss");
                         case "science":url=new URL("https://www.sciencenews.org/feed");
-                        default:;
+                        default:event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();
                     }
                 }catch (MalformedURLException e){
                     e.printStackTrace();
