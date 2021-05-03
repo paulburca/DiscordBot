@@ -4,6 +4,8 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class CommandHandler extends ListenerAdapter {
@@ -67,6 +69,28 @@ public class CommandHandler extends ListenerAdapter {
             event.getChannel().sendTyping().queue();
             event.getChannel().sendMessage(information.build()).queue();
             information.clear();
+        }
+        if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "news")) {
+            if (commandArguments.length != 2) {
+                try {
+                    URL url=new URL("https://www.news.ro/rss");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                URL url;
+                try{
+                    switch (commandArguments[1]){
+                        case "sport":url=new URL("https://www.digisport.ro/rss");
+                        case "political":url=new URL("https://www.politico.com/rss");
+                        case "science":url=new URL("https://www.sciencenews.org/feed");
+                        default:;
+                    }
+                }catch (MalformedURLException e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
