@@ -1,6 +1,8 @@
 import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.SyndFeedOutput;
@@ -19,53 +21,35 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 public class RSSManager {
-    URL url;
+    URLConnection url;
     SyndFeedInput syndFeedInput;
     SyndFeedOutput syndFeedOutput;
     InputStream inputStream;
     SyndFeed syndFeed;
     GuildMessageReceivedEvent event;
     String feedString;
-    public void addFooter(SyndEntry entry){
-    }
 
-    private Object createFooter(String original, String link, String title) {
-        return 1;
-    }
 
-    public RSSManager(String url, GuildMessageReceivedEvent event){
-        this.event= event;
+    public RSSManager(String url, GuildMessageReceivedEvent event) {
+        this.event = event;
         boolean ok = false;
         try {
-            this.url= new URL(url);
+            this.url = new URL(url).openConnection();
             inputStream = new URL(url).openConnection().getInputStream();
+            if ("gzip".equals(this.url.getContentEncoding())) {
+                inputStream = new GZIPInputStream(inputStream);
+            }
+            InputSource inputSource = new InputSource(inputStream);
             syndFeedInput = new SyndFeedInput();
-            syndFeed = syndFeedInput.build(new XmlReader(this.url));
-            ok=true;
-        }
-        catch (Exception ex) {
+            syndFeed = syndFeedInput.build(inputSource);
+            ok = true;
+        } catch (Exception ex) {
             ex.printStackTrace();
-            System.out.println("ERROR: "+ex.getMessage());
+            System.out.println("ERROR: " + ex.getMessage());
         }
-
-        if(ok){
-
-            for (Object o : syndFeed.getEntries()) {
-
-                SyndEntry entry = (SyndEntry) o;
-                addFooter(entry);
-
-            }
-            StringWriter writer = new StringWriter();
-
-            try {
-                syndFeedOutput.output(syndFeed, writer);
-            } catch (IOException | FeedException e) {
-                e.printStackTrace();
-            }
-
-            feedString=writer.toString();
+        List res = syndFeed.getEntries();
+        for(int i=0; i<3;i++){
+            event.getChannel().sendMessage(((SyndEntryImpl) res.get(i)).getLink()).queue();
         }
     }
-
 }

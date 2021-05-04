@@ -79,14 +79,13 @@ public class CommandHandler extends ListenerAdapter {
                 String url = null;
                 switch (commandArguments[1]){
                     case "sport":url="https://www.digisport.ro/rss"; break;
-                    case "political":url="https://www.politico.com/rss"; break;
+                    case "political":url="https://rss.politico.com/politics.xml"; break;
                     case "science":url="https://www.sciencenews.org/feed"; break;
+                    case "IT": url="https://stackoverflow.com/feeds"; break;
                     default:event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();break;
                 }
                 if(url!=null){
-                    System.out.println("sarmale");
                     RSSManager rssManager = new RSSManager(url,event);
-
                 }
 
             }
