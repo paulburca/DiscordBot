@@ -72,11 +72,11 @@ public class CommandHandler extends ListenerAdapter {
             information.clear();
         }
         if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "news")) {
+            String url = null;
             if (commandArguments.length != 2) {
-                String url="https://www.news.ro/rss";
+                url="https://www.news.ro/rss";
             }
             else{
-                String url = null;
                 switch (commandArguments[1]){
                     case "sport":url="https://www.digisport.ro/rss"; break;
                     case "political":url="https://rss.politico.com/politics.xml"; break;
@@ -84,10 +84,9 @@ public class CommandHandler extends ListenerAdapter {
                     case "IT": url="https://stackoverflow.com/feeds"; break;
                     default:event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();break;
                 }
-                if(url!=null){
-                    RSSManager rssManager = new RSSManager(url,event);
-                }
-
+            }
+            if(url!=null){
+                RSSManager rssManager = new RSSManager(url,event);
             }
         }
     }
