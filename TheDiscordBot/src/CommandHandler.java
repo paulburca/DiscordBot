@@ -73,7 +73,8 @@ public class CommandHandler extends ListenerAdapter {
         }
         if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "news")) {
             String url = null;
-            if (commandArguments.length != 2) {
+            int numberOfEntries = 3; // default
+            if (commandArguments.length <= 2) {
                 url="https://www.news.ro/rss";
             }
             else{
@@ -85,8 +86,15 @@ public class CommandHandler extends ListenerAdapter {
                     default:event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();break;
                 }
             }
+            if(commandArguments.length == 3){
+                numberOfEntries = Integer.parseInt(commandArguments[2]);
+            }
+            else
+            {
+                numberOfEntries = Integer.parseInt(commandArguments[1]);
+            }
             if(url!=null){
-                RSSManager rssManager = new RSSManager(url,event);
+                RSSManager rssManager = new RSSManager(url,event,numberOfEntries);
             }
         }
     }
