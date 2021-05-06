@@ -1,22 +1,24 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class Feed {
+public class PredefinedFeed {
     private final String feedTitle;
     private final String feedLink;
-    private final String feedDescription;
+    private final String feedCategory;
     private final String feedLanguage;
     private final String feedCopyright;
-    private final String feedPublicationDate;
+    private final LocalDate feedPublicationDate;
 
     private final List<FeedMessage> entries = new ArrayList<FeedMessage>();
 
 
-    public Feed(String feedTitle, String feedLink, String feedDescription,
-                String feedLanguage, String feedCopyright, String feedPublicationDate) {
+    public PredefinedFeed(String feedTitle, String feedLink, String feedCategory,
+                          String feedLanguage, String feedCopyright, LocalDate feedPublicationDate) {
         this.feedTitle = feedTitle;
         this.feedLink = feedLink;
-        this.feedDescription = feedDescription;
+        this.feedCategory = feedCategory;
         this.feedLanguage = feedLanguage;
         this.feedCopyright = feedCopyright;
         this.feedPublicationDate = feedPublicationDate;
@@ -30,8 +32,8 @@ public class Feed {
         return feedLink;
     }
 
-    public String getFeedDescription() {
-        return feedDescription;
+    public String getFeedCategory() {
+        return feedCategory;
     }
 
     public String getFeedLanguage() {
@@ -42,7 +44,7 @@ public class Feed {
         return feedCopyright;
     }
 
-    public String getFeedPublicationDate() {
+    public LocalDate getFeedPublicationDate() {
         return feedPublicationDate;
     }
 

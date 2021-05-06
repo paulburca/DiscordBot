@@ -1,24 +1,14 @@
-import com.sun.syndication.feed.module.Module;
 import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.feed.synd.SyndFeedImpl;
-import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.SyndFeedOutput;
-import com.sun.syndication.io.XmlReader;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.xml.sax.InputSource;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
@@ -30,7 +20,7 @@ public class RSSManager {
     SyndFeed syndFeed;
     GuildMessageReceivedEvent event;
     String feedString;
-    Feed feed;
+    PredefinedFeed predefinedFeed;
 
 
     public RSSManager(String url, GuildMessageReceivedEvent event,int numberOfEntries) {

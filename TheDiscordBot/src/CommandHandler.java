@@ -4,12 +4,46 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CommandHandler extends ListenerAdapter {
+
+    private List<PredefinedFeed> listPredefinedFeeds = getFeeds();
+
+    public  List<PredefinedFeed> getFeeds() {
+        List<PredefinedFeed> returnList = new ArrayList<>();
+        BufferedReader fileReader;
+        try {
+            fileReader = new BufferedReader(new FileReader("feeds.txt"));
+            String fileLine;
+            while ((fileLine = fileReader.readLine()) != null) {
+                String[] feedArguments = fileLine.split(",");
+                PredefinedFeed predefinedFeed = new PredefinedFeed("",feedArguments[0],
+                        feedArguments[1],"romana","none", LocalDate.now());
+                returnList.add(predefinedFeed);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return returnList;
+    }
+
+    public static boolean isNumeric(String string){
+        if(string == null){
+            return false;
+        }
+        try{
+            int number = Integer.parseInt(string);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] commandArguments = event.getMessage().getContentRaw().split("\\s+");
 
@@ -71,31 +105,39 @@ public class CommandHandler extends ListenerAdapter {
             event.getChannel().sendMessage(information.build()).queue();
             information.clear();
         }
+
+
         if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "news")) {
             String url = null;
             int numberOfEntries = 3; // default
-            if (commandArguments.length <= 2) {
-                url="https://www.news.ro/rss";
-            }
-            else{
-                switch (commandArguments[1]){
-                    case "sport":url="https://www.digisport.ro/rss"; break;
-                    case "political":url="https://rss.politico.com/politics.xml"; break;
-                    case "science":url="https://www.sciencenews.org/feed"; break;
-                    case "IT": url="https://stackoverflow.com/feeds"; break;
-                    default:event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();break;
-                }
-            }
-            if(commandArguments.length == 3){
-                numberOfEntries = Integer.parseInt(commandArguments[2]);
+
+            if(commandArguments.length <=2){
+                url = listPredefinedFeeds.get(0).getFeedLink();
             }
             else
             {
-                numberOfEntries = Integer.parseInt(commandArguments[1]);
+                int count = 0;
+                boolean existence = false;
+                for(PredefinedFeed predefinedFeed : listPredefinedFeeds){
+                    if(commandArguments[1].equals(predefinedFeed.getFeedCategory())){
+                        url = listPredefinedFeeds.get(count).getFeedLink();
+                        existence = true;
+                    }
+                    count++;
+                }
+                if(!existence){
+                    event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();
+                }
             }
-            if(url!=null){
-                RSSManager rssManager = new RSSManager(url,event,numberOfEntries);
+
+            if (isNumeric(commandArguments[commandArguments.length-1])) {
+                numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length-1]);
+            }
+
+            if (url != null) {
+                RSSManager rssManager = new RSSManager(url, event, numberOfEntries);
             }
         }
     }
+
 }
