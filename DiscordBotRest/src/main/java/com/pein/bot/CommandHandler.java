@@ -1,16 +1,28 @@
 package com.pein.bot;
 
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.xml.sax.InputSource;
 
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 public class CommandHandler extends ListenerAdapter {
 
@@ -45,7 +57,7 @@ public class CommandHandler extends ListenerAdapter {
         }
         return true;
     }
-
+    @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] commandArguments = event.getMessage().getContentRaw().split("\\s+");
 
@@ -139,6 +151,11 @@ public class CommandHandler extends ListenerAdapter {
             if (url != null) {
                 RSSManager rssManager = new RSSManager(url, event, numberOfEntries);
             }
+        }
+        if(commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "ask")){
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input=pi&appid=VK9P9V-P7PJWEKPHA",String.class);
+              
         }
     }
 

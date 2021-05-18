@@ -30,7 +30,7 @@ public class RSSManager {
         boolean ok = false;
         try {
             this.url = new URL(url).openConnection();
-            inputStream = new URL(url).openConnection().getInputStream();
+            inputStream = this.url.getInputStream();
             if ("gzip".equals(this.url.getContentEncoding())) {
                 inputStream = new GZIPInputStream(inputStream);
             }
