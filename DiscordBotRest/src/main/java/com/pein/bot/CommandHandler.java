@@ -8,15 +8,24 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
@@ -154,8 +163,33 @@ public class CommandHandler extends ListenerAdapter {
         }
         if(commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "ask")){
             RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input=pi&appid=VK9P9V-P7PJWEKPHA",String.class);
-              
+            String input = commandArguments[1];
+            ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input="+input+"&appid=VK9P9V-P7PJWEKPHA",String.class);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = null;
+            try {
+                builder = factory.newDocumentBuilder();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            }
+            InputSource is = new InputSource(new StringReader(response.getBody()));
+            Document document = null;
+            try {
+                document = builder.parse(is);
+            } catch (SAXException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Element root = document.getDocumentElement();
+            NodeList nodeList = root.getElementsByTagName("pod");
+            for(int i = 0; i<nodeList.getLength();i++) {
+                Element element = (Element) nodeList.item(i);
+                if(element.getAttribute("title").equals("Wikipedia summary")){
+                    Node node1 = element.getElementsByTagName("plaintext").item(0);
+                    event.getChannel().sendMessage (node1.getTextContent()).queue();
+                }
+            }
         }
     }
 
