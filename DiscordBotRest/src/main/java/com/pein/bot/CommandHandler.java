@@ -4,6 +4,7 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
+
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -163,8 +164,18 @@ public class CommandHandler extends ListenerAdapter {
         }
         if(commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "ask")){
             RestTemplate restTemplate = new RestTemplate();
-            String input = commandArguments[1];
-            ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input="+input+"&appid=VK9P9V-P7PJWEKPHA",String.class);
+            String[] input = commandArguments;
+            String question = "";
+            for(int i = 1;i<input.length;i++){
+                if(i == input.length - 1){
+                    question = question + input[i];
+                }else
+                {
+                    question = question + input[i] + " ";
+                }
+            }
+            //System.out.println(question);
+            ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input="+question+"&appid=VK9P9V-P7PJWEKPHA",String.class);
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = null;
             try {
@@ -172,6 +183,7 @@ public class CommandHandler extends ListenerAdapter {
             } catch (ParserConfigurationException e) {
                 e.printStackTrace();
             }
+            //System.out.println(response.getBody());
             InputSource is = new InputSource(new StringReader(response.getBody()));
             Document document = null;
             try {
@@ -181,14 +193,23 @@ public class CommandHandler extends ListenerAdapter {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             Element root = document.getDocumentElement();
+
             NodeList nodeList = root.getElementsByTagName("pod");
+            String message = "";
             for(int i = 0; i<nodeList.getLength();i++) {
                 Element element = (Element) nodeList.item(i);
-                if(element.getAttribute("title").equals("Wikipedia summary")){
-                    Node node1 = element.getElementsByTagName("plaintext").item(0);
-                    event.getChannel().sendMessage (node1.getTextContent()).queue();
-                }
+
+                Node node1 = element.getElementsByTagName("plaintext").item(0);
+                message = message + node1.getTextContent() + "\n";
+            }
+            if(message != ""){
+                event.getChannel().sendMessage (message).queue();
+            }
+            else
+            {
+                event.getChannel().sendMessage("There is no such thing.").queue();
             }
         }
     }
