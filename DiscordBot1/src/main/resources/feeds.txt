@@ -1,5 +1,0 @@
-https://www.news.ro/rss,origin
-https://www.digisport.ro/rss,sport
-https://rss.politico.com/politics.xml,politics
-https://www.sciencenews.org/feed,science
-https://stackoverflow.com/feeds,it
