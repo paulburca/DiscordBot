@@ -3,15 +3,14 @@ package com.pein.bot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-public class Info {
+public class Info extends Command{
 
-    private static GuildMessageReceivedEvent event;
-
-    public Info(GuildMessageReceivedEvent event){
-        setEvent(event);
+    Info(String[] arguments, GuildMessageReceivedEvent event) {
+        super(arguments, event);
     }
 
-    public static void handleInfo(){
+    void handleCommand(){
+
         GuildMessageReceivedEvent event = getEvent();
 
         EmbedBuilder information = new EmbedBuilder();
@@ -25,13 +24,5 @@ public class Info {
         event.getChannel().sendTyping().queue();
         event.getChannel().sendMessage(information.build()).queue();
         information.clear();
-    }
-
-    public static GuildMessageReceivedEvent getEvent() {
-        return event;
-    }
-
-    public static void setEvent(GuildMessageReceivedEvent event) {
-        Info.event = event;
     }
 }

@@ -16,22 +16,18 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 
-public class Ask {
-    private static String[] args;
-    private static GuildMessageReceivedEvent event;
+public class Ask extends Command{
 
-    public Ask(String[] args, GuildMessageReceivedEvent event){
-        setArgs(args);
-        setEvent(event);
+    Ask(String[] arguments, GuildMessageReceivedEvent event) {
+        super(arguments, event);
     }
 
-    public static void handleAsk(){
-        String commandArguments[] = getArgs();
-        GuildMessageReceivedEvent event = getEvent();
+    void handleCommand(){
 
         RestTemplate restTemplate = new RestTemplate();
-        String[] input = commandArguments;
+        String[] input = getArguments();
         String question = "";
+        GuildMessageReceivedEvent event = getEvent();
         for(int i = 1;i<input.length;i++){
             if(i == input.length - 1){
                 question = question + input[i];
@@ -79,19 +75,4 @@ public class Ask {
         }
     }
 
-    public static String[] getArgs() {
-        return args;
-    }
-
-    public static void setArgs(String[] args) {
-        Ask.args = args;
-    }
-
-    public static GuildMessageReceivedEvent getEvent() {
-        return event;
-    }
-
-    public static void setEvent(GuildMessageReceivedEvent event) {
-        Ask.event = event;
-    }
 }

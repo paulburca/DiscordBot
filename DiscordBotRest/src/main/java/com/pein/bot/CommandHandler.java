@@ -13,27 +13,34 @@ public class CommandHandler extends ListenerAdapter {
         switch (args[args.length - 1]) {
             case "clear":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "clear")) {
-                    new Clear(commandArguments, event);
-                    Clear.handleClear();
+                    Clear clear = new Clear(commandArguments,event);
+                    clear.handleCommand();
                 }
                 break;
             case "info":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "info")) {
-                    new Info(event);
-                    Info.handleInfo();
+                    Info info = new Info(commandArguments,event);
+                    info.handleCommand();
                 }
                 break;
             case "news":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "news")) {
                     News news = new News(commandArguments, event);
-                    news.handleNews();
+                    news.handleCommand();
                 }
+                break;
             case "ask":
                 if(commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "ask")){
-                    new Ask(commandArguments,event);
-                    Ask.handleAsk();
-
+                    Ask ask = new Ask(commandArguments, event);
+                    ask.handleCommand();
                 }
+                break;
+            case "prefix":
+                if(commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "prefix")){
+                    Prefix prefix = new Prefix(commandArguments, event);
+                    prefix.handleCommand();
+                }
+                break;
             default:
                 break;
         }

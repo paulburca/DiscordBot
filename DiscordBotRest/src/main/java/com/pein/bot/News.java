@@ -8,13 +8,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class News {
-    private static String[] args;
-    private static GuildMessageReceivedEvent event;
-
-    public News(String[] args, GuildMessageReceivedEvent event){
-        setArgs(args);
-        setEvent(event);
+public class News extends Command{
+    News(String[] arguments, GuildMessageReceivedEvent event) {
+        super(arguments, event);
     }
 
     private List<PredefinedFeed> listPredefinedFeeds = getFeeds();
@@ -49,10 +45,10 @@ public class News {
         return true;
     }
 
-    public void handleNews()
+    public void handleCommand()
     {
         String url = null;
-        String commandArguments[] = getArgs();
+        String commandArguments[] = getArguments();
         GuildMessageReceivedEvent event = getEvent();
         int numberOfEntries = 3; // default
 
@@ -84,19 +80,4 @@ public class News {
         }
     }
 
-    public static String[] getArgs() {
-        return args;
-    }
-
-    public static void setArgs(String[] args) {
-        News.args = args;
-    }
-
-    public static GuildMessageReceivedEvent getEvent() {
-        return event;
-    }
-
-    public static void setEvent(GuildMessageReceivedEvent event) {
-        News.event = event;
-    }
 }

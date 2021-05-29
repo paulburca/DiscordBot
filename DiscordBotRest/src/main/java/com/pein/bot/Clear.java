@@ -7,17 +7,13 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.awt.*;
 import java.util.List;
 
-public class Clear{
-    private static String[] args;
-    private static GuildMessageReceivedEvent event;
-
-    public Clear(String[] args, GuildMessageReceivedEvent event){
-        setArgs(args);
-        setEvent(event);
+public class Clear extends Command{
+    Clear(String[] arguments, GuildMessageReceivedEvent event) {
+        super(arguments, event);
     }
 
-    public static void handleClear(){
-        String commandArguments[] = getArgs();
+    void handleCommand(){
+        String commandArguments[] = getArguments();
         GuildMessageReceivedEvent event = getEvent();
         if (commandArguments.length != 2 || Integer.parseInt(commandArguments[1]) <= 3) {
             EmbedBuilder usage = new EmbedBuilder();
@@ -61,21 +57,5 @@ public class Clear{
             }
 
         }
-    }
-
-    public static String[] getArgs() {
-        return args;
-    }
-
-    public static void setArgs(String[] args) {
-        Clear.args = args;
-    }
-
-    public static GuildMessageReceivedEvent getEvent() {
-        return event;
-    }
-
-    public static void setEvent(GuildMessageReceivedEvent event) {
-        Clear.event = event;
     }
 }
