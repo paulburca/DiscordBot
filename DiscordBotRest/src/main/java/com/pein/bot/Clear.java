@@ -7,12 +7,12 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.awt.*;
 import java.util.List;
 
-public class Clear extends Command{
+public class Clear extends Command {
     Clear(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
     }
 
-    void handleCommand(){
+    void handleCommand() {
         String commandArguments[] = getArguments();
         GuildMessageReceivedEvent event = getEvent();
         if (commandArguments.length != 2 || Integer.parseInt(commandArguments[1]) <= 3) {

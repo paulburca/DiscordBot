@@ -25,7 +25,7 @@ public class RSSManager {
     PredefinedFeed predefinedFeed;
 
 
-    public RSSManager(String url, GuildMessageReceivedEvent event,int numberOfEntries) {
+    public RSSManager(String url, GuildMessageReceivedEvent event, int numberOfEntries) {
         this.event = event;
         boolean ok = false;
         try {
@@ -43,7 +43,7 @@ public class RSSManager {
             System.out.println("ERROR: " + ex.getMessage());
         }
         List<SyndEntry> res = syndFeed.getEntries();
-        for(int i=0; i<numberOfEntries;i++){
+        for (int i = 0; i < numberOfEntries; i++) {
             //event.getChannel().sendMessage(( res.get(i)).getLink()).queue();
             //System.out.println( res.get(i));
             FeedMessage feedMessage = new FeedMessage((res.get(i)).getTitle(),

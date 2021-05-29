@@ -16,28 +16,27 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.StringReader;
 
-public class Ask extends Command{
+public class Ask extends Command {
 
     Ask(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
     }
 
-    void handleCommand(){
+    void handleCommand() {
 
         RestTemplate restTemplate = new RestTemplate();
         String[] input = getArguments();
         String question = "";
         GuildMessageReceivedEvent event = getEvent();
-        for(int i = 1;i<input.length;i++){
-            if(i == input.length - 1){
+        for (int i = 1; i < input.length; i++) {
+            if (i == input.length - 1) {
                 question = question + input[i];
-            }else
-            {
+            } else {
                 question = question + input[i] + " ";
             }
         }
         //System.out.println(question);
-        ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input="+question+"&appid=VK9P9V-P7PJWEKPHA",String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input=" + question + "&appid=VK9P9V-P7PJWEKPHA", String.class);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
         try {
@@ -60,17 +59,15 @@ public class Ask extends Command{
 
         NodeList nodeList = root.getElementsByTagName("pod");
         String message = "";
-        for(int i = 0; i<nodeList.getLength();i++) {
+        for (int i = 0; i < nodeList.getLength(); i++) {
             Element element = (Element) nodeList.item(i);
 
             Node node1 = element.getElementsByTagName("plaintext").item(0);
             message = message + node1.getTextContent() + "\n";
         }
-        if(message != ""){
-            event.getChannel().sendMessage (message).queue();
-        }
-        else
-        {
+        if (message != "") {
+            event.getChannel().sendMessage(message).queue();
+        } else {
             event.getChannel().sendMessage("There is no such thing.").queue();
         }
     }

@@ -28,7 +28,7 @@ public class GuildMemberJoin extends ListenerAdapter {
     };
 
     @Override
-    public void onGuildMemberJoin(GuildMemberJoinEvent event){
+    public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         Random random = new Random();
 
         int number = random.nextInt(messages.length);
@@ -37,9 +37,9 @@ public class GuildMemberJoin extends ListenerAdapter {
 
         JDA client = event.getJDA();
 
-        List<TextChannel> channels = client.getTextChannelsByName("general",false);
+        List<TextChannel> channels = client.getTextChannelsByName("general", false);
 
-        for (TextChannel channel : channels){
+        for (TextChannel channel : channels) {
             EmbedBuilder join = new EmbedBuilder();
             join.setColor(Color.BLUE);
             join.setDescription(messages[number].replace("[member]", user));
@@ -47,10 +47,10 @@ public class GuildMemberJoin extends ListenerAdapter {
         }
 
         Guild guild = event.getGuild();
-        List<Role> roleList = guild.getRolesByName("Member",true);
+        List<Role> roleList = guild.getRolesByName("Member", true);
 
-        for(Role role : roleList){
-            guild.addRoleToMember(event.getMember(),role).complete();
+        for (Role role : roleList) {
+            guild.addRoleToMember(event.getMember(), role).complete();
         }
     }
 }

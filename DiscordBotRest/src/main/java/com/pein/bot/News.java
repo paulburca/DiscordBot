@@ -8,14 +8,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class News extends Command{
+public class News extends Command {
     News(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
     }
 
     private List<PredefinedFeed> listPredefinedFeeds = getFeeds();
 
-    public  List<PredefinedFeed> getFeeds() {
+    public List<PredefinedFeed> getFeeds() {
         List<PredefinedFeed> returnList = new ArrayList<>();
         BufferedReader fileReader;
         try {
@@ -23,8 +23,8 @@ public class News extends Command{
             String fileLine;
             while ((fileLine = fileReader.readLine()) != null) {
                 String[] feedArguments = fileLine.split(",");
-                PredefinedFeed predefinedFeed = new PredefinedFeed("",feedArguments[0],
-                        feedArguments[1],"romana","none", LocalDate.now());
+                PredefinedFeed predefinedFeed = new PredefinedFeed("", feedArguments[0],
+                        feedArguments[1], "romana", "none", LocalDate.now());
                 returnList.add(predefinedFeed);
             }
         } catch (Exception exception) {
@@ -33,11 +33,11 @@ public class News extends Command{
         return returnList;
     }
 
-    public static boolean isNumeric(String string){
-        if(string == null){
+    public static boolean isNumeric(String string) {
+        if (string == null) {
             return false;
         }
-        try{
+        try {
             int number = Integer.parseInt(string);
         } catch (NumberFormatException e) {
             return false;
@@ -45,34 +45,31 @@ public class News extends Command{
         return true;
     }
 
-    public void handleCommand()
-    {
+    public void handleCommand() {
         String url = null;
         String commandArguments[] = getArguments();
         GuildMessageReceivedEvent event = getEvent();
         int numberOfEntries = 3; // default
 
-        if(commandArguments.length <=2){
+        if (commandArguments.length <= 2) {
             url = listPredefinedFeeds.get(0).getFeedLink();
-        }
-        else
-        {
+        } else {
             int count = 0;
             boolean existence = false;
-            for(PredefinedFeed predefinedFeed : listPredefinedFeeds){
-                if(commandArguments[1].equals(predefinedFeed.getFeedCategory())){
+            for (PredefinedFeed predefinedFeed : listPredefinedFeeds) {
+                if (commandArguments[1].equals(predefinedFeed.getFeedCategory())) {
                     url = listPredefinedFeeds.get(count).getFeedLink();
                     existence = true;
                 }
                 count++;
             }
-            if(!existence){
+            if (!existence) {
                 event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();
             }
         }
 
-        if (isNumeric(commandArguments[commandArguments.length-1])) {
-            numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length-1]);
+        if (isNumeric(commandArguments[commandArguments.length - 1])) {
+            numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length - 1]);
         }
 
         if (url != null) {

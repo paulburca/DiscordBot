@@ -2,14 +2,14 @@ package com.pein.bot;
 
 import java.util.Date;
 
-public class FeedMessage{
+public class FeedMessage {
     private String entryTitle;
     private String entryDescription;
     private String entryLink;
     private String entryAuthor;
     private Date entryPublishedDate;
 
-    public FeedMessage(String title, String description, String link,String author,Date publishedDate){
+    public FeedMessage(String title, String description, String link, String author, Date publishedDate) {
         this.entryTitle = title;
         this.entryDescription = description;
         this.entryLink = link;

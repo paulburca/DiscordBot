@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
 import java.awt.*;
 import java.util.List;
 
@@ -16,9 +17,9 @@ public class GuildMemberLeave extends ListenerAdapter {
 
         JDA client = event.getJDA();
 
-        List<TextChannel> channels = client.getTextChannelsByName("general",false);
+        List<TextChannel> channels = client.getTextChannelsByName("general", false);
 
-        for (TextChannel channel : channels){
+        for (TextChannel channel : channels) {
             EmbedBuilder join = new EmbedBuilder();
             join.setColor(Color.BLUE);
             join.setDescription(user + " left.");

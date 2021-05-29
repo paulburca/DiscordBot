@@ -7,7 +7,7 @@ public abstract class Command {
     private static String[] arguments;
     private static GuildMessageReceivedEvent event;
 
-    Command(String[] arguments, GuildMessageReceivedEvent event){
+    Command(String[] arguments, GuildMessageReceivedEvent event) {
         setArguments(arguments);
         setEvent(event);
     }
