@@ -4,6 +4,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
+import net.dv8tion.jda.api.exceptions.MissingAccessException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
@@ -19,11 +20,15 @@ public class GuildMemberLeave extends ListenerAdapter {
 
         List<TextChannel> channels = client.getTextChannelsByName("general", false);
 
-        for (TextChannel channel : channels) {
-            EmbedBuilder join = new EmbedBuilder();
-            join.setColor(Color.BLUE);
-            join.setDescription(user + " left.");
-            channel.sendMessage(join.build()).queue();
+        try {
+            for (TextChannel channel : channels) {
+                EmbedBuilder join = new EmbedBuilder();
+                join.setColor(Color.BLUE);
+                join.setDescription(user + " left.");
+                channel.sendMessage(join.build()).queue();
+            }
+        }catch(MissingAccessException exception){
+
         }
     }
 

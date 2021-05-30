@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
+import net.dv8tion.jda.api.exceptions.MissingAccessException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
@@ -37,19 +38,14 @@ public class GuildMemberJoin extends ListenerAdapter {
         JDA client = event.getJDA();
 
         List<TextChannel> channels = client.getTextChannelsByName("general", false);
+        try {
+            for (TextChannel channel : channels) {
+                EmbedBuilder join = new EmbedBuilder();
+                join.setColor(Color.BLUE);
+                join.setDescription(messages[number].replace("[member]", user));
+                channel.sendMessage(join.build()).queue();
+            }
+        } catch (MissingAccessException exception) { }
 
-        for (TextChannel channel : channels) {
-            EmbedBuilder join = new EmbedBuilder();
-            join.setColor(Color.BLUE);
-            join.setDescription(messages[number].replace("[member]", user));
-            channel.sendMessage(join.build()).queue();
-        }
-
-        Guild guild = event.getGuild();
-        List<Role> roleList = guild.getRolesByName("Member", true);
-
-        for (Role role : roleList) {
-            guild.addRoleToMember(event.getMember(), role).complete();
-        }
     }
 }

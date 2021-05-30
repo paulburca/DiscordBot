@@ -19,15 +19,10 @@ public class Clear extends Command {
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.ORANGE);
             usage.setTitle("Specify amount to delete");
-            usage.setDescription("Usage: '" + BotLauncher.prefix + "clear [number of messages]'");
+            usage.setDescription("Usage: '" + BotLauncher.getPrefix() + "clear [number of messages]'");
             event.getChannel().sendMessage(usage.build()).queue();
         } else {
             try {
-
-//                    event.getChannel().getHistory().retrievePast(Integer.parseInt(commandArguments[1]))
-//                            .map(messages -> messages.get(1))
-//                            .queue(message -> System.out.println("Retrieving the first message channel before delete"));
-
                 List<Message> messages = event.getChannel()
                         .getHistory()
                         .retrievePast(Integer.parseInt(commandArguments[1]))

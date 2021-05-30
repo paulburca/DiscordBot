@@ -7,36 +7,35 @@ public class CommandHandler extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] commandArguments = event.getMessage().getContentRaw().split("\\s+");
-
-        String[] args = commandArguments[0].split(BotLauncher.prefix);
+        String[] args = commandArguments[0].split(BotLauncher.getPrefix());
 
         switch (args[args.length - 1]) {
             case "clear":
-                if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "clear")) {
+                if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "clear")) {
                     Clear clear = new Clear(commandArguments, event);
                     clear.handleCommand();
                 }
                 break;
             case "info":
-                if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "info")) {
+                if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "info")) {
                     Info info = new Info(commandArguments, event);
                     info.handleCommand();
                 }
                 break;
             case "news":
-                if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "news")) {
+                if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "news")) {
                     News news = new News(commandArguments, event);
                     news.handleCommand();
                 }
                 break;
             case "ask":
-                if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "ask")) {
+                if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "ask")) {
                     Ask ask = new Ask(commandArguments, event);
                     ask.handleCommand();
                 }
                 break;
             case "prefix":
-                if (commandArguments[0].equalsIgnoreCase(BotLauncher.prefix + "prefix")) {
+                if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "prefix")) {
                     Prefix prefix = new Prefix(commandArguments, event);
                     prefix.handleCommand();
                 }

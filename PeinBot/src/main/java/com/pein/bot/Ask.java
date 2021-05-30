@@ -1,5 +1,6 @@
 package com.pein.bot;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -13,6 +14,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.*;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -23,11 +25,20 @@ public class Ask extends Command {
     }
 
     void handleCommand() {
-
-        RestTemplate restTemplate = new RestTemplate();
         String[] input = getArguments();
         String question = "";
         GuildMessageReceivedEvent event = getEvent();
+
+        if (input.length == 1) {
+            EmbedBuilder usage = new EmbedBuilder();
+            usage.setColor(Color.MAGENTA);
+            usage.setTitle("Usage:");
+            usage.setDescription("#ask [your question here] \n\n Try and ask me something again!");
+            event.getChannel().sendMessage(usage.build()).queue();
+            return;
+        }
+
+        RestTemplate restTemplate = new RestTemplate();
         for (int i = 1; i < input.length; i++) {
             if (i == input.length - 1) {
                 question = question + input[i];
@@ -35,23 +46,24 @@ public class Ask extends Command {
                 question = question + input[i] + " ";
             }
         }
-        //System.out.println(question);
+
         ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input=" + question + "&appid=VK9P9V-P7PJWEKPHA", String.class);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = null;
+
         try {
             builder = factory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
-        //System.out.println(response.getBody());
+
         InputSource is = new InputSource(new StringReader(response.getBody()));
+
         Document document = null;
+
         try {
             document = builder.parse(is);
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SAXException | IOException e) {
             e.printStackTrace();
         }
 
@@ -65,10 +77,18 @@ public class Ask extends Command {
             Node node1 = element.getElementsByTagName("plaintext").item(0);
             message = message + node1.getTextContent() + "\n";
         }
-        if (message != "") {
-            event.getChannel().sendMessage(message).queue();
+        if (!message.equals("")) {
+            EmbedBuilder answer = new EmbedBuilder();
+            answer.setColor(Color.ORANGE);
+            answer.setTitle("Your answer is:");
+            answer.setDescription(message);
+            event.getChannel().sendMessage(answer.build()).queue();
         } else {
-            event.getChannel().sendMessage("There is no such thing.").queue();
+            EmbedBuilder fail = new EmbedBuilder();
+            fail.setColor(Color.RED);
+            fail.setTitle("No answer found:");
+            fail.setDescription("Ask me something again!");
+            event.getChannel().sendMessage(fail.build()).queue();
         }
     }
 
