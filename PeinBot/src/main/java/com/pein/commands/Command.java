@@ -1,18 +1,18 @@
-package com.pein.bot;
+package com.pein.commands;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-public abstract class Command {
+public abstract class Command implements Runnable{
 
     private static String[] arguments;
     private static GuildMessageReceivedEvent event;
 
-    Command(String[] arguments, GuildMessageReceivedEvent event) {
+    public Command(String[] arguments, GuildMessageReceivedEvent event) {
         setArguments(arguments);
         setEvent(event);
     }
-
-    abstract void handleCommand();
+    @Override
+    public abstract void run();
 
 
     public static String[] getArguments() {

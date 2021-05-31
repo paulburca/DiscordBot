@@ -1,4 +1,4 @@
-package com.pein.bot;
+package com.pein.commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -18,16 +18,16 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.StringReader;
 
-public class Ask extends Command {
+public class Ask extends Command{
 
-    Ask(String[] arguments, GuildMessageReceivedEvent event) {
+    public Ask(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
     }
 
-    void handleCommand() {
+    public void run() {
 
         String[] input = getArguments();
-        String question = "";
+        StringBuilder question = new StringBuilder();
         GuildMessageReceivedEvent event = getEvent();
 
         if (input.length == 1) {
@@ -42,9 +42,9 @@ public class Ask extends Command {
         RestTemplate restTemplate = new RestTemplate();
         for (int i = 1; i < input.length; i++) {
             if (i == input.length - 1) {
-                question = question + input[i];
+                question.append(input[i]);
             } else {
-                question = question + input[i] + " ";
+                question.append(input[i]).append(" ");
             }
         }
 
@@ -71,14 +71,14 @@ public class Ask extends Command {
         Element root = document.getDocumentElement();
 
         NodeList nodeList = root.getElementsByTagName("pod");
-        String message = "";
+        StringBuilder message = new StringBuilder();
         for (int i = 0; i < nodeList.getLength(); i++) {
             Element element = (Element) nodeList.item(i);
             Node node1 = element.getElementsByTagName("plaintext").item(0);
-            message = message + node1.getTextContent() + "\n";
+            message.append(node1.getTextContent()).append("\n");
         }
 
-        if (!message.equals("")) {
+        if (!message.toString().equals("")) {
             EmbedBuilder answer = new EmbedBuilder();
             answer.setColor(Color.ORANGE);
             answer.setTitle("Your answer is:");

@@ -1,17 +1,14 @@
-package com.pein.bot;
+package com.pein.commands;
 
 import com.pein.Entities.CategoryEntity;
 import com.pein.Entities.FeedEntity;
 import com.pein.Entities.FeedcategoryEntity;
+import com.pein.bot.RSSManager;
 import com.pein.repositories.CategoryRepository;
 import com.pein.repositories.FeedCategoryRepository;
 import com.pein.repositories.FeedRepository;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class News extends Command {
@@ -20,7 +17,7 @@ public class News extends Command {
     CategoryRepository categoryRepository = new CategoryRepository();
     FeedCategoryRepository feedCategoryRepository = new FeedCategoryRepository();
 
-    News(String[] arguments, GuildMessageReceivedEvent event) {
+    public News(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
     }
 
@@ -29,15 +26,15 @@ public class News extends Command {
             return false;
         }
         try {
-            int number = Integer.parseInt(string);
+            Integer.parseInt(string);
         } catch (NumberFormatException e) {
             return false;
         }
         return true;
     }
-
-    public void handleCommand() {
-        String url = null;
+    @Override
+    public void run() {
+        String url;
         String[] commandArguments = getArguments();
         GuildMessageReceivedEvent event = getEvent();
         int numberOfEntries = 3; // default

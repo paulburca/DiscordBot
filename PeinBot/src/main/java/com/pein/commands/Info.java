@@ -1,15 +1,15 @@
-package com.pein.bot;
+package com.pein.commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 public class Info extends Command {
 
-    Info(String[] arguments, GuildMessageReceivedEvent event) {
+    public Info(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
     }
 
-    void handleCommand() {
+    public void run() {
         GuildMessageReceivedEvent event = getEvent();
 
         String commandField = "[prefix]info -> This command will display information about PeinBot. \n\n" +

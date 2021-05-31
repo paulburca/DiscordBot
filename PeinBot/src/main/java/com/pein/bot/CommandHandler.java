@@ -1,5 +1,6 @@
 package com.pein.bot;
 
+import com.pein.commands.*;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -13,39 +14,39 @@ public class CommandHandler extends ListenerAdapter {
         switch (args[args.length - 1]) {
             case "clear":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "clear")) {
-                    Clear clear = new Clear(commandArguments, event);
-                    clear.handleCommand();
+                    Thread clear = new Thread(new Clear(commandArguments, event));
+                    clear.start();
                 }
                 break;
             case "info":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "info")) {
-                    Info info = new Info(commandArguments, event);
-                    info.handleCommand();
+                    Thread info = new Thread(new Info(commandArguments, event));
+                    info.start();
                 }
                 break;
             case "news":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "news")) {
-                    News news = new News(commandArguments, event);
-                    news.handleCommand();
+                    Thread news = new Thread(new News(commandArguments, event));
+                    news.start();
                 }
                 break;
             case "ask":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "ask")) {
-                    Ask ask = new Ask(commandArguments, event);
-                    ask.handleCommand();
+                    Thread ask = new Thread(new Ask(commandArguments, event));
+                    ask.start();
                 }
                 break;
             case "prefix":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "prefix")) {
-                    Prefix prefix = new Prefix(commandArguments, event);
-                    prefix.handleCommand();
+                    Thread prefix = new Thread(new Prefix(commandArguments, event));
+                    prefix.start();
                 }
                 break;
             case "addNews":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "addNews")) {
                     if(commandArguments.length>=4){
-                        AddNews addNews = new AddNews(commandArguments, event);
-                        addNews.handleCommand();
+                        Thread addNews = new Thread(new AddNews(commandArguments, event));
+                        addNews.start();
                     }
                     else{
                         event.getChannel().sendMessage("The command has the following structure: "+
@@ -55,8 +56,14 @@ public class CommandHandler extends ListenerAdapter {
                 break;
             case "categories":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "categories")) {
-                    GetCategories getCategories = new GetCategories(commandArguments, event);
-                    getCategories.handleCommand();
+                    Thread getCategories = new Thread(new GetCategories(commandArguments, event));
+                    getCategories.start();
+                }
+                break;
+            case "setLang":
+                if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "setLang")) {
+                    Thread setLang = new Thread(new setLang(commandArguments, event));
+                    setLang.start();
                 }
             default:
                 break;

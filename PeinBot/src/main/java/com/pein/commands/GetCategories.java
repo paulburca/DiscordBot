@@ -1,4 +1,4 @@
-package com.pein.bot;
+package com.pein.commands;
 
 import com.pein.Entities.CategoryEntity;
 import com.pein.repositories.CategoryRepository;
@@ -12,7 +12,7 @@ public class GetCategories extends Command{
     }
     CategoryRepository categoryRepository = new CategoryRepository();
     @Override
-    void handleCommand() {
+    public void run() {
         List<CategoryEntity> categories = categoryRepository.findAll();
         StringBuilder stringBuilder = new  StringBuilder();
         for(CategoryEntity categoryEntity : categories){

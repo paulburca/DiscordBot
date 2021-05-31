@@ -10,9 +10,11 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import javax.security.auth.login.LoginException;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Locale;
 
 public class BotLauncher {
     private static String prefix;
+    private static Locale locale;
 
     public static void setPrefixBot() {
         setPrefix("#");
@@ -29,6 +31,9 @@ public class BotLauncher {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+    public static void setLocale(Locale locale){
+        BotLauncher.locale = locale;
     }
 
     public static void main(String[] args) throws LoginException {

@@ -1,4 +1,4 @@
-package com.pein.bot;
+package com.pein.commands;
 
 import com.pein.Entities.CategoryEntity;
 import com.pein.Entities.FeedEntity;
@@ -6,25 +6,21 @@ import com.pein.Entities.FeedcategoryEntity;
 import com.pein.repositories.CategoryRepository;
 import com.pein.repositories.FeedCategoryRepository;
 import com.pein.repositories.FeedRepository;
-import com.sun.syndication.feed.rss.Category;
-import com.sun.syndication.feed.synd.SyndCategory;
 import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.ParsingFeedException;
 import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.SyndFeedOutput;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.xml.sax.InputSource;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 
 public class AddNews extends Command{
-    AddNews(String[] arguments, GuildMessageReceivedEvent event) {
+    public AddNews(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
     }
     URLConnection url;
@@ -35,7 +31,7 @@ public class AddNews extends Command{
     FeedRepository feedRepository = new FeedRepository();
     FeedCategoryRepository feedCategoryRepository = new FeedCategoryRepository();
     @Override
-    void handleCommand() {
+    public void run() {
         String url = getArguments()[2];
         try {
             this.url = new URL(url).openConnection();
@@ -46,13 +42,11 @@ public class AddNews extends Command{
             InputSource inputSource = new InputSource(inputStream);
             syndFeedInput = new SyndFeedInput();
             syndFeed = syndFeedInput.build(inputSource);
-            List<String> categories = new ArrayList<>();
             if(getArguments().length<2)
                 getEvent().getChannel().sendMessage("Please specify the categories.").queue();
-            for(int i = 3 ; i<getArguments().length;i++)
-                categories.add(getArguments()[i]);
+            List<String> categories = new ArrayList<>(Arrays.asList(getArguments()).subList(3, getArguments().length));
             for(String category : categories){
-                Long id = null;
+                long id;
                 List<CategoryEntity> categoryEntities = categoryRepository.findByName(category);
                 if(categoryEntities.size()==0){
                     CategoryEntity categoryEntity = new CategoryEntity();
@@ -71,7 +65,7 @@ public class AddNews extends Command{
                 feedRepository.create(feedEntity);
                 feedcategoryEntity.setIdFeed(feedEntity.getId());
                 feedCategoryRepository.create(feedcategoryEntity);
-                getEvent().getChannel().sendMessage("News feed added successfully.").queue();
+                getEvent().getChannel().sendMessage("Newsfeed added successfully.").queue();
             }
 
         } catch (  Exception ex) {

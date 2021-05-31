@@ -1,5 +1,6 @@
-package com.pein.bot;
+package com.pein.commands;
 
+import com.pein.bot.BotLauncher;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -7,11 +8,11 @@ import java.awt.*;
 import java.io.*;
 
 public class Prefix extends Command {
-    Prefix(String[] arguments, GuildMessageReceivedEvent event) {
+    public Prefix(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
     }
 
-    void handleCommand() {
+    public void run() {
         String[] commandArguments = getArguments();
         GuildMessageReceivedEvent event = getEvent();
 
