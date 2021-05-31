@@ -46,7 +46,8 @@ public class RSSManager {
                     (res.get(i)).getPublishedDate());
             EmbedBuilder feedEmbed = new EmbedBuilder();
             feedEmbed.setTitle(feedMessage.getEntryTitle());
-            feedEmbed.setDescription(feedMessage.getEntryDescription().substring(0,Math.min(feedMessage.getEntryDescription().length() - 1,1020)) + "...");
+            feedEmbed.setDescription(BotLauncher.getMessages().getString("check.article")+feedMessage.getEntryLink()+")\n"
+                    + feedMessage.getEntryDescription().substring(0,Math.min(feedMessage.getEntryDescription().length() - 1,1020)) + "...");
             feedEmbed.setColor(0xed1313);
             feedEmbed.setFooter("fill", event.getMember().getUser().getEffectiveAvatarUrl());
             event.getChannel().sendTyping().queue();

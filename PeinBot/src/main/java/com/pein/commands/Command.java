@@ -2,7 +2,7 @@ package com.pein.commands;
 
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-public abstract class Command implements Runnable{
+public abstract class Command implements Runnable {
 
     private static String[] arguments;
     private static GuildMessageReceivedEvent event;

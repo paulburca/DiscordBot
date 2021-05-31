@@ -19,7 +19,7 @@ public class Clear extends Command {
         if (commandArguments.length != 2 || Integer.parseInt(commandArguments[1]) <= 3) {
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.RED);
-            usage.setTitle(BotLauncher.getMessages().getString("amountToDelete"));
+            usage.setTitle(BotLauncher.getMessages().getString("amount.to.delete"));
             usage.setDescription("Usage: '" + BotLauncher.getPrefix() + "clear [number of messages]'");
             event.getChannel().sendMessage(usage.build()).queue();
         } else {
@@ -33,22 +33,22 @@ public class Clear extends Command {
 
                 EmbedBuilder success = new EmbedBuilder();
                 success.setColor(Color.GREEN);
-                success.setTitle(BotLauncher.getMessages().getString("successDelete") + commandArguments[1] + ".");
-                success.setDescription(BotLauncher.getMessages().getString("oldMessages"));
+                success.setTitle(BotLauncher.getMessages().getString("success.delete") + commandArguments[1] + ".");
+                success.setDescription(BotLauncher.getMessages().getString("old.messages"));
                 event.getChannel().sendMessage(success.build()).queue();
 
             } catch (IllegalArgumentException e) {
                 if (e.toString().startsWith("java.lang.IllegalArgument.Exception: Message retrieval")) {
                     EmbedBuilder error = new EmbedBuilder();
                     error.setColor(Color.ORANGE);
-                    error.setTitle(BotLauncher.getMessages().getString("tooMany"));
-                    error.setDescription(BotLauncher.getMessages().getString("tooMany.desc"));
+                    error.setTitle(BotLauncher.getMessages().getString("too.many"));
+                    error.setDescription(BotLauncher.getMessages().getString("too.many.desc"));
                     event.getChannel().sendMessage(error.build()).queue();
                 } else {
                     EmbedBuilder error = new EmbedBuilder();
                     error.setColor(Color.ORANGE);
-                    error.setTitle(BotLauncher.getMessages().getString("tooOld"));
-                    error.setDescription(BotLauncher.getMessages().getString("oldMessages"));
+                    error.setTitle(BotLauncher.getMessages().getString("too.old"));
+                    error.setDescription(BotLauncher.getMessages().getString("old.messages"));
                     event.getChannel().sendMessage(error.build()).queue();
                 }
             }

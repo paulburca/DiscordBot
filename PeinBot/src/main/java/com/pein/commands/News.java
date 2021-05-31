@@ -8,8 +8,10 @@ import com.pein.bot.RSSManager;
 import com.pein.repositories.CategoryRepository;
 import com.pein.repositories.FeedCategoryRepository;
 import com.pein.repositories.FeedRepository;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
+import java.awt.*;
 import java.util.List;
 
 public class News extends Command {
@@ -33,15 +35,15 @@ public class News extends Command {
         }
         return true;
     }
+
     @Override
     public void run() {
         String url;
         String[] commandArguments = getArguments();
         GuildMessageReceivedEvent event = getEvent();
         int numberOfEntries = 3; // default
-        // daca if isNumeric (numar in cazul in care e numeric se face rss)
 
-        switch(commandArguments.length){
+        switch (commandArguments.length) {
             case 1:
                 FeedEntity feedEntity = feedRepository.findById(1L);
                 url = feedEntity.getLink();
@@ -58,15 +60,18 @@ public class News extends Command {
                 }
             case 3:
                 List<CategoryEntity> categoryEntities = categoryRepository.findByName(commandArguments[1]);
-                if(categoryEntities.size()==0)
-                    event.getChannel().sendMessage(BotLauncher.getMessages().getString("notACateg")).queue();
-                else{
+                if (categoryEntities.size() == 0) {
+                    EmbedBuilder error = new EmbedBuilder();
+                    error.setColor(Color.RED);
+                    error.setDescription(BotLauncher.getMessages().getString("not.a.category"));
+                    event.getChannel().sendMessage(error.build()).queue();
+                } else {
                     Long idCategory = categoryEntities.get(0).getId();
                     List<FeedcategoryEntity> feedcategoryEntities = feedCategoryRepository.findById2(idCategory);
                     if (isNumeric(commandArguments[commandArguments.length - 1])) {
                         numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length - 1]);
                     }
-                    for(FeedcategoryEntity feedcategoryEntity : feedcategoryEntities){
+                    for (FeedcategoryEntity feedcategoryEntity : feedcategoryEntities) {
                         Long idFeed = feedcategoryEntity.getIdFeed();
                         FeedEntity feedEntity2 = feedRepository.findById(idFeed);
                         url = feedEntity2.getLink();

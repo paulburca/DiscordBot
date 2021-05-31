@@ -19,7 +19,7 @@ public class Prefix extends Command {
         if (commandArguments.length != 2 || commandArguments[1].length() != 1) {
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.ORANGE);
-            usage.setTitle(BotLauncher.getMessages().getString("anotherPrefix"));
+            usage.setTitle(BotLauncher.getMessages().getString("another.prefix"));
             usage.setDescription(BotLauncher.getMessages().getString("usage") + BotLauncher.getPrefix() + BotLauncher.getMessages().getString("prefix"));
             event.getChannel().sendMessage(usage.build()).queue();
             return;
@@ -27,23 +27,23 @@ public class Prefix extends Command {
 
         if (BotLauncher.getPrefix().equals(commandArguments[1])) {
             EmbedBuilder usage = new EmbedBuilder();
-            usage.setColor(Color.ORANGE);
-            usage.setTitle(BotLauncher.getMessages().getString("anotherPrefix"));
+            usage.setColor(Color.RED);
+            usage.setTitle(BotLauncher.getMessages().getString("another.prefix"));
             usage.setDescription(BotLauncher.getMessages().getString("usage") + BotLauncher.getPrefix()
-                    + BotLauncher.getMessages().getString("prefix") + "\n" + BotLauncher.getMessages().getString("alreadyPrefix"));
+                    + BotLauncher.getMessages().getString("prefix") + "\n" + BotLauncher.getMessages().getString("already.prefix"));
             return;
         }
 
         if (commandArguments[1].matches("[~!#&/>]")) {
             BotLauncher.setPrefix(commandArguments[1]);
             EmbedBuilder usage = new EmbedBuilder();
-            usage.setColor(Color.ORANGE);
-            usage.setTitle(BotLauncher.getMessages().getString("newPrefix"));
-            usage.setDescription(BotLauncher.getMessages().getString("successPrefix") + BotLauncher.getPrefix());
+            usage.setColor(Color.GREEN);
+            usage.setTitle(BotLauncher.getMessages().getString("new.prefix"));
+            usage.setDescription(BotLauncher.getMessages().getString("success.prefix") + BotLauncher.getPrefix());
             event.getChannel().sendMessage(usage.build()).queue();
 
             BufferedWriter fileWriter;
-            try{
+            try {
                 fileWriter = new BufferedWriter(new FileWriter("src/main/resources/prefix.txt"));
                 fileWriter.write(commandArguments[1]);
                 fileWriter.close();

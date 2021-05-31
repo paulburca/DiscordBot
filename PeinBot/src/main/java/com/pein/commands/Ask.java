@@ -19,7 +19,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.StringReader;
 
-public class Ask extends Command{
+public class Ask extends Command {
 
     public Ask(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
@@ -35,7 +35,7 @@ public class Ask extends Command{
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.MAGENTA);
             usage.setTitle(BotLauncher.getMessages().getString("usage"));
-            usage.setDescription(BotLauncher.getMessages().getString("usage.desc") +"\n\n" + BotLauncher.getMessages().getString("usage.desc1"));
+            usage.setDescription(BotLauncher.getMessages().getString("usage.desc") + "\n\n" + BotLauncher.getMessages().getString("usage.desc1"));
             event.getChannel().sendMessage(usage.build()).queue();
             return;
         }
@@ -82,14 +82,14 @@ public class Ask extends Command{
         if (!message.toString().equals("")) {
             EmbedBuilder answer = new EmbedBuilder();
             answer.setColor(Color.ORANGE);
-            answer.setTitle(BotLauncher.getMessages().getString("answerIs"));
-            answer.setDescription(message.substring(0,Math.min(message.length()-1,512)) + "...");
+            answer.setTitle(BotLauncher.getMessages().getString("answer.is"));
+            answer.setDescription(message.substring(0, Math.min(message.length() - 1, 512)) + "...");
             event.getChannel().sendMessage(answer.build()).queue();
         } else {
             EmbedBuilder fail = new EmbedBuilder();
             fail.setColor(Color.RED);
-            fail.setTitle(BotLauncher.getMessages().getString("noAnswers"));
-            fail.setDescription(BotLauncher.getMessages().getString("askMe"));
+            fail.setTitle(BotLauncher.getMessages().getString("no.answers"));
+            fail.setDescription(BotLauncher.getMessages().getString("ask.me"));
             event.getChannel().sendMessage(fail.build()).queue();
         }
 

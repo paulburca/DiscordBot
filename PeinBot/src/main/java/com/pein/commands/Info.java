@@ -26,11 +26,11 @@ public class Info extends Command {
         EmbedBuilder information = new EmbedBuilder();
         information.setTitle(BotLauncher.getMessages().getString("info.title"));
         information.setDescription(BotLauncher.getMessages().getString("info.desc"));
-        information.addField(BotLauncher.getMessages().getString("info.cmds.title"),commandField,false);
-        information.addField(BotLauncher.getMessages().getString("info.tracking.title"), keepTrack,false);
+        information.addField(BotLauncher.getMessages().getString("info.commands.title"), commandField, false);
+        information.addField(BotLauncher.getMessages().getString("info.tracking.title"), keepTrack, false);
         information.addField(BotLauncher.getMessages().getString("info.creators.title"), creators, false);
         information.setColor(0xed1313);
-        information.setFooter(BotLauncher.getMessages().getString("info.noSource"), event.getMember().getUser().getEffectiveAvatarUrl());
+        information.setFooter(BotLauncher.getMessages().getString("info.no.source"), event.getMember().getUser().getEffectiveAvatarUrl());
 
 
         event.getChannel().sendTyping().queue();

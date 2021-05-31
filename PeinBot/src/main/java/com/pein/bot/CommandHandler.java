@@ -1,8 +1,11 @@
 package com.pein.bot;
 
 import com.pein.commands.*;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.awt.*;
 
 public class CommandHandler extends ListenerAdapter {
     @Override
@@ -49,8 +52,13 @@ public class CommandHandler extends ListenerAdapter {
                         addNews.start();
                     }
                     else{
-                        event.getChannel().sendMessage(BotLauncher.getMessages().getString("hasStruct") +
-                                BotLauncher.getPrefix() + BotLauncher.getMessages().getString("addNewsStruct")).queue();
+
+                            EmbedBuilder wrongFormat = new EmbedBuilder();
+                            wrongFormat.setColor(Color.RED);
+                            wrongFormat.setDescription(BotLauncher.getMessages().getString("has.structure") +
+                                    BotLauncher.getPrefix() + BotLauncher.getMessages().getString("add.news.structure"));
+                            event.getChannel().sendMessage(wrongFormat.build()).queue();
+
                     }
                 }
                 break;
