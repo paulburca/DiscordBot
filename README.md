@@ -34,7 +34,7 @@ Acest bot este capabil să raspundă la întrebări simple și să ofere informa
 * #setLang [ro/en] - Permite schimbarea limbii folosite de către Pein (Nu includ mesajele primite de la feed-uri și de la Wolfram Alpha API)
 <br><br>
 ## Cum pot folosi Pein?
-Pein foloseste baza de date PostgreSQL avand urmatorul script de creare: [link](https://github.com/paulburca/DiscordBot/blob/main/Pein.sql)
+Pein foloseste baza de date PostgreSQL avand urmatorul script de creare: [Pein.sql](https://github.com/paulburca/DiscordBot/blob/main/Pein.sql)<br>
 Fisierul persistence.xml trebuie modificat corespunzator:
 ```
         <properties>
@@ -45,5 +45,5 @@ Fisierul persistence.xml trebuie modificat corespunzator:
         </properties>
 ```
 ## Exemple de feed-uri
-Exemple de feed-uri ce pot fi folosite se pot gasi in fisierul [link](https://github.com/paulburca/DiscordBot/blob/main/feeds.txt)
+Exemple de feed-uri ce pot fi folosite se pot gasi in fisierul [feeds.txt](https://github.com/paulburca/DiscordBot/blob/main/feeds.txt)
 
