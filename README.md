@@ -4,8 +4,8 @@
 * [Cerințele proiectului](#cerințe-proiect)
 * [Descriere](#descriere)
 * [Comenzi](#comenzi)
-* [Setup](#setup)
-* [Sample](#sample)
+* [Setup](#cum-pot-folosi-pein)
+* [Sample](#exemple-de-feed-uri)
 
 ## Cerințele proiectului
 - Servicii REST, Discord API
