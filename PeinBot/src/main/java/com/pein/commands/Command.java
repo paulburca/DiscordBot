@@ -11,9 +11,9 @@ public abstract class Command implements Runnable{
         setArguments(arguments);
         setEvent(event);
     }
+
     @Override
     public abstract void run();
-
 
     public static String[] getArguments() {
         return arguments;

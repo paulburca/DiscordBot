@@ -19,8 +19,8 @@ public class Prefix extends Command {
         if (commandArguments.length != 2 || commandArguments[1].length() != 1) {
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.ORANGE);
-            usage.setTitle("Choose a new prefix for Pein:");
-            usage.setDescription("Usage: '" + BotLauncher.getPrefix() + "prefix [!#&/>]'");
+            usage.setTitle(BotLauncher.getMessages().getString("anotherPrefix"));
+            usage.setDescription(BotLauncher.getMessages().getString("usage") + BotLauncher.getPrefix() + BotLauncher.getMessages().getString("prefix"));
             event.getChannel().sendMessage(usage.build()).queue();
             return;
         }
@@ -28,9 +28,9 @@ public class Prefix extends Command {
         if (BotLauncher.getPrefix().equals(commandArguments[1])) {
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.ORANGE);
-            usage.setTitle("Choose a new prefix for Pein:");
-            usage.setDescription("Usage: '" + BotLauncher.getPrefix() + "prefix [~!#&/>]' \n Current selected prefix is already in use.");
-            event.getChannel().sendMessage(usage.build()).queue();
+            usage.setTitle(BotLauncher.getMessages().getString("anotherPrefix"));
+            usage.setDescription(BotLauncher.getMessages().getString("usage") + BotLauncher.getPrefix()
+                    + BotLauncher.getMessages().getString("prefix") + "\n" + BotLauncher.getMessages().getString("alreadyPrefix"));
             return;
         }
 
@@ -38,8 +38,8 @@ public class Prefix extends Command {
             BotLauncher.setPrefix(commandArguments[1]);
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.ORANGE);
-            usage.setTitle("New prefix:");
-            usage.setDescription("Successfully changed the prefix to: " + BotLauncher.getPrefix());
+            usage.setTitle(BotLauncher.getMessages().getString("newPrefix"));
+            usage.setDescription(BotLauncher.getMessages().getString("successPrefix") + BotLauncher.getPrefix());
             event.getChannel().sendMessage(usage.build()).queue();
 
             BufferedWriter fileWriter;

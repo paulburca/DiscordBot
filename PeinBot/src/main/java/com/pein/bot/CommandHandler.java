@@ -49,8 +49,8 @@ public class CommandHandler extends ListenerAdapter {
                         addNews.start();
                     }
                     else{
-                        event.getChannel().sendMessage("The command has the following structure: "+
-                                BotLauncher.getPrefix() +"addNews [name] [link] [categories]").queue();
+                        event.getChannel().sendMessage(BotLauncher.getMessages().getString("hasStruct") +
+                                BotLauncher.getPrefix() + BotLauncher.getMessages().getString("addNewsStruct")).queue();
                     }
                 }
                 break;

@@ -1,5 +1,6 @@
 package com.pein.commands;
 
+import com.pein.bot.BotLauncher;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,8 @@ public class Ask extends Command{
         if (input.length == 1) {
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.MAGENTA);
-            usage.setTitle("Usage:");
-            usage.setDescription("#ask [your question here] \n\n Try and ask me something again!");
+            usage.setTitle(BotLauncher.getMessages().getString("usage"));
+            usage.setDescription(BotLauncher.getMessages().getString("usage.desc") +"\n\n" + BotLauncher.getMessages().getString("usage.desc1"));
             event.getChannel().sendMessage(usage.build()).queue();
             return;
         }
@@ -81,14 +82,14 @@ public class Ask extends Command{
         if (!message.toString().equals("")) {
             EmbedBuilder answer = new EmbedBuilder();
             answer.setColor(Color.ORANGE);
-            answer.setTitle("Your answer is:");
+            answer.setTitle(BotLauncher.getMessages().getString("answerIs"));
             answer.setDescription(message.substring(0,Math.min(message.length()-1,512)) + "...");
             event.getChannel().sendMessage(answer.build()).queue();
         } else {
             EmbedBuilder fail = new EmbedBuilder();
             fail.setColor(Color.RED);
-            fail.setTitle("No answer found:");
-            fail.setDescription("Ask me something again!");
+            fail.setTitle(BotLauncher.getMessages().getString("noAnswers"));
+            fail.setDescription(BotLauncher.getMessages().getString("askMe"));
             event.getChannel().sendMessage(fail.build()).queue();
         }
 

@@ -3,6 +3,7 @@ package com.pein.commands;
 import com.pein.Entities.CategoryEntity;
 import com.pein.Entities.FeedEntity;
 import com.pein.Entities.FeedcategoryEntity;
+import com.pein.bot.BotLauncher;
 import com.pein.repositories.CategoryRepository;
 import com.pein.repositories.FeedCategoryRepository;
 import com.pein.repositories.FeedRepository;
@@ -43,7 +44,7 @@ public class AddNews extends Command{
             syndFeedInput = new SyndFeedInput();
             syndFeed = syndFeedInput.build(inputSource);
             if(getArguments().length<2)
-                getEvent().getChannel().sendMessage("Please specify the categories.").queue();
+                getEvent().getChannel().sendMessage(BotLauncher.getMessages().getString("specCateg")).queue();
             List<String> categories = new ArrayList<>(Arrays.asList(getArguments()).subList(3, getArguments().length));
             for(String category : categories){
                 long id;
@@ -65,11 +66,11 @@ public class AddNews extends Command{
                 feedRepository.create(feedEntity);
                 feedcategoryEntity.setIdFeed(feedEntity.getId());
                 feedCategoryRepository.create(feedcategoryEntity);
-                getEvent().getChannel().sendMessage("Newsfeed added successfully.").queue();
+                getEvent().getChannel().sendMessage(BotLauncher.getMessages().getString("newsSuccess")).queue();
             }
 
         } catch (  Exception ex) {
-            getEvent().getChannel().sendMessage("Something went wrong").queue();
+            getEvent().getChannel().sendMessage(BotLauncher.getMessages().getString("error")).queue();
         }
 
     }

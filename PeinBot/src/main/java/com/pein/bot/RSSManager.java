@@ -3,7 +3,6 @@ package com.pein.bot;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.SyndFeedOutput;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.xml.sax.InputSource;
@@ -17,13 +16,9 @@ import java.util.zip.GZIPInputStream;
 public class RSSManager {
     URLConnection url;
     SyndFeedInput syndFeedInput;
-    SyndFeedOutput syndFeedOutput;
     InputStream inputStream;
     SyndFeed syndFeed;
     GuildMessageReceivedEvent event;
-    String feedString;
-    PredefinedFeed predefinedFeed;
-
 
     public RSSManager(String url, GuildMessageReceivedEvent event, int numberOfEntries) {
         this.event = event;
@@ -44,8 +39,6 @@ public class RSSManager {
         }
         List<SyndEntry> res = syndFeed.getEntries();
         for (int i = 0; i < numberOfEntries; i++) {
-            //event.getChannel().sendMessage(( res.get(i)).getLink()).queue();
-            //System.out.println( res.get(i));
             FeedMessage feedMessage = new FeedMessage((res.get(i)).getTitle(),
                     (res.get(i)).getDescription().getValue(),
                     (res.get(i)).getLink(),
@@ -59,7 +52,6 @@ public class RSSManager {
             event.getChannel().sendTyping().queue();
             event.getChannel().sendMessage(feedEmbed.build()).queue();
             feedEmbed.clear();
-            //System.out.println(feedMessage);
         }
     }
 }

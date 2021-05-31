@@ -24,7 +24,7 @@ public class GuildMemberLeave extends ListenerAdapter {
             for (TextChannel channel : channels) {
                 EmbedBuilder join = new EmbedBuilder();
                 join.setColor(Color.BLUE);
-                join.setDescription(user + " left.");
+                join.setDescription(user + BotLauncher.getMessages().getString("leave"));
                 channel.sendMessage(join.build()).queue();
             }
         }catch(MissingAccessException exception){

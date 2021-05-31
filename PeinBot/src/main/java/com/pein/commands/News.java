@@ -3,6 +3,7 @@ package com.pein.commands;
 import com.pein.Entities.CategoryEntity;
 import com.pein.Entities.FeedEntity;
 import com.pein.Entities.FeedcategoryEntity;
+import com.pein.bot.BotLauncher;
 import com.pein.bot.RSSManager;
 import com.pein.repositories.CategoryRepository;
 import com.pein.repositories.FeedCategoryRepository;
@@ -58,7 +59,7 @@ public class News extends Command {
             case 3:
                 List<CategoryEntity> categoryEntities = categoryRepository.findByName(commandArguments[1]);
                 if(categoryEntities.size()==0)
-                    event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();
+                    event.getChannel().sendMessage(BotLauncher.getMessages().getString("notACateg")).queue();
                 else{
                     Long idCategory = categoryEntities.get(0).getId();
                     List<FeedcategoryEntity> feedcategoryEntities = feedCategoryRepository.findById2(idCategory);

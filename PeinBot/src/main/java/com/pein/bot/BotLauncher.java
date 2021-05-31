@@ -1,7 +1,5 @@
 package com.pein.bot;
 
-import com.pein.Entities.FeedEntity;
-import com.pein.repositories.FeedRepository;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -11,10 +9,18 @@ import javax.security.auth.login.LoginException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class BotLauncher {
     private static String prefix;
     private static Locale locale;
+    private static ResourceBundle messages;
+
+    public static void setup(){
+        Locale.setDefault(Locale.UK);
+        setLocale(Locale.getDefault());
+        setMessages(ResourceBundle.getBundle("Lang.Lang", getLocale()));
+    }
 
     public static void setPrefixBot() {
         setPrefix("#");
@@ -23,7 +29,7 @@ public class BotLauncher {
             fileReader = new BufferedReader(new FileReader("src/main/resources/prefix.txt"));
             String fileLine;
             if ((fileLine = fileReader.readLine()) != null) {
-                if(fileLine.matches("[~!#&/>]") && fileLine.length() == 1){
+                if (fileLine.matches("[~!#&/>]") && fileLine.length() == 1) {
                     String[] arguments = fileLine.split("\n");
                     setPrefix(arguments[0]);
                 }
@@ -32,13 +38,11 @@ public class BotLauncher {
             exception.printStackTrace();
         }
     }
-    public static void setLocale(Locale locale){
-        BotLauncher.locale = locale;
-    }
 
     public static void main(String[] args) throws LoginException {
 
         setPrefixBot();
+        setup();
         String token = "ODMyNjU2OTAyMzk5ODUyNTc0.YHm-Kw.ShgtTv6QhmOPYqJyCqZM-F4g5oo";
 
         // All other events will be disabled.
@@ -59,5 +63,21 @@ public class BotLauncher {
 
     public static void setPrefix(String prefix) {
         BotLauncher.prefix = prefix;
+    }
+
+    public static Locale getLocale() {
+        return locale;
+    }
+
+    public static void setLocale(Locale locale) {
+        BotLauncher.locale = locale;
+    }
+
+    public static ResourceBundle getMessages() {
+        return messages;
+    }
+
+    public static void setMessages(ResourceBundle messages) {
+        BotLauncher.messages = messages;
     }
 }
