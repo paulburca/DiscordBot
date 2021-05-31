@@ -21,8 +21,14 @@ public class FeedRepository extends AbstractRepository<FeedEntity> {
     }
 
     @Override
-    public List<FeedEntity> findByCategory(String category) {
-        TypedQuery<FeedEntity> query = entityManager.createNamedQuery("Feed.findCategory",FeedEntity.class);
-        return query.setParameter("category", category).getResultList();
+    public List<FeedEntity> findByName(String name) {
+        TypedQuery<FeedEntity> query = entityManager.createNamedQuery("Feed.findName",FeedEntity.class);
+        return query.setParameter("name", name).getResultList();
+    }
+
+    @Override
+    public List<FeedEntity> findAll() {
+        TypedQuery<FeedEntity> query = entityManager.createNamedQuery("Feed.findAll",FeedEntity.class);
+        return query.getResultList();
     }
 }

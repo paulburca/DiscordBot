@@ -1,6 +1,10 @@
 package com.pein.bot;
 
+import com.pein.Entities.CategoryEntity;
 import com.pein.Entities.FeedEntity;
+import com.pein.Entities.FeedcategoryEntity;
+import com.pein.repositories.CategoryRepository;
+import com.pein.repositories.FeedCategoryRepository;
 import com.pein.repositories.FeedRepository;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -11,28 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class News extends Command {
+
+    FeedRepository feedRepository = new FeedRepository();
+    CategoryRepository categoryRepository = new CategoryRepository();
+    FeedCategoryRepository feedCategoryRepository = new FeedCategoryRepository();
+
     News(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
-    }
-    private List<PredefinedFeed> listPredefinedFeeds = getFeeds();
-    FeedRepository feedRepository = new FeedRepository();
-
-    public List<PredefinedFeed> getFeeds() {
-        List<PredefinedFeed> returnList = new ArrayList<>();
-        BufferedReader fileReader;
-        try {
-            fileReader = new BufferedReader(new FileReader("src/main/resources/feeds.txt"));
-            String fileLine;
-            while ((fileLine = fileReader.readLine()) != null) {
-                String[] feedArguments = fileLine.split(",");
-                PredefinedFeed predefinedFeed = new PredefinedFeed("", feedArguments[0],
-                        feedArguments[1], "romana", "none", LocalDate.now());
-                returnList.add(predefinedFeed);
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return returnList;
     }
 
     public static boolean isNumeric(String string) {
@@ -52,33 +41,45 @@ public class News extends Command {
         String[] commandArguments = getArguments();
         GuildMessageReceivedEvent event = getEvent();
         int numberOfEntries = 3; // default
+        // daca if isNumeric (numar in cazul in care e numeric se face rss)
 
-        if (commandArguments.length <= 2) {
-//            url = listPredefinedFeeds.get(0).getFeedLink();
-//            FeedEntity feedEntity = feedRepository.findAllById(1L);
-            FeedEntity feedEntity = feedRepository.findById(1L);
-            url = feedEntity.getLink();
-        } else {
-            int count = 0;
-            boolean existence = false;
-            for (PredefinedFeed predefinedFeed : listPredefinedFeeds) {
-                if (commandArguments[1].equals(predefinedFeed.getFeedCategory())) {
-                    url = listPredefinedFeeds.get(count).getFeedLink();
-                    existence = true;
+        switch(commandArguments.length){
+            case 1:
+                FeedEntity feedEntity = feedRepository.findById(1L);
+                url = feedEntity.getLink();
+                RSSManager rssManager = new RSSManager(url, event, numberOfEntries);
+                break;
+            case 2:
+                FeedEntity feedEntity1;
+                if (isNumeric(commandArguments[commandArguments.length - 1])) {
+                    feedEntity1 = feedRepository.findById(1L);
+                    url = feedEntity1.getLink();
+                    numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length - 1]);
+                    RSSManager rssManager1 = new RSSManager(url, event, numberOfEntries);
+                    break;
                 }
-                count++;
-            }
-            if (!existence) {
-                event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();
-            }
-        }
-
-        if (isNumeric(commandArguments[commandArguments.length - 1])) {
-            numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length - 1]);
-        }
-
-        if (url != null) {
-            RSSManager rssManager = new RSSManager(url, event, numberOfEntries);
+            case 3:
+                List<CategoryEntity> categoryEntities = categoryRepository.findByName(commandArguments[1]);
+                if(categoryEntities.size()==0)
+                    event.getChannel().sendMessage("Sorry, but that's not a valid category.").queue();
+                else{
+                    Long idCategory = categoryEntities.get(0).getId();
+                    List<FeedcategoryEntity> feedcategoryEntities = feedCategoryRepository.findById2(idCategory);
+                    if (isNumeric(commandArguments[commandArguments.length - 1])) {
+                        numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length - 1]);
+                    }
+                    for(FeedcategoryEntity feedcategoryEntity : feedcategoryEntities){
+                        Long idFeed = feedcategoryEntity.getIdFeed();
+                        FeedEntity feedEntity2 = feedRepository.findById(idFeed);
+                        url = feedEntity2.getLink();
+                        if (url != null) {
+                            RSSManager rssManager2 = new RSSManager(url, event, numberOfEntries);
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
         }
     }
 

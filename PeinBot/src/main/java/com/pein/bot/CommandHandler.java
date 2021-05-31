@@ -7,6 +7,7 @@ public class CommandHandler extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] commandArguments = event.getMessage().getContentRaw().split("\\s+");
+
         String[] args = commandArguments[0].split(BotLauncher.getPrefix());
 
         switch (args[args.length - 1]) {
@@ -40,6 +41,23 @@ public class CommandHandler extends ListenerAdapter {
                     prefix.handleCommand();
                 }
                 break;
+            case "addNews":
+                if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "addNews")) {
+                    if(commandArguments.length>=4){
+                        AddNews addNews = new AddNews(commandArguments, event);
+                        addNews.handleCommand();
+                    }
+                    else{
+                        event.getChannel().sendMessage("The command has the following structure: "+
+                                BotLauncher.getPrefix() +"addNews [name] [link] [categories]").queue();
+                    }
+                }
+                break;
+            case "categories":
+                if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "categories")) {
+                    GetCategories getCategories = new GetCategories(commandArguments, event);
+                    getCategories.handleCommand();
+                }
             default:
                 break;
         }

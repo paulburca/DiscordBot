@@ -38,7 +38,7 @@ public class Prefix extends Command {
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.ORANGE);
             usage.setTitle("New prefix:");
-            usage.setDescription("Successfully changed pre prefix to: " + BotLauncher.getPrefix());
+            usage.setDescription("Successfully changed the prefix to: " + BotLauncher.getPrefix());
             event.getChannel().sendMessage(usage.build()).queue();
 
             BufferedWriter fileWriter;

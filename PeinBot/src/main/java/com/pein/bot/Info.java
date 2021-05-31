@@ -10,7 +10,6 @@ public class Info extends Command {
     }
 
     void handleCommand() {
-
         GuildMessageReceivedEvent event = getEvent();
 
         String commandField = "[prefix]info -> This command will display information about PeinBot. \n\n" +
@@ -36,5 +35,6 @@ public class Info extends Command {
         event.getChannel().sendTyping().queue();
         event.getChannel().sendMessage(information.build()).queue();
         information.clear();
+
     }
 }

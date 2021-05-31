@@ -25,6 +25,7 @@ public class Ask extends Command {
     }
 
     void handleCommand() {
+
         String[] input = getArguments();
         String question = "";
         GuildMessageReceivedEvent event = getEvent();
@@ -73,15 +74,15 @@ public class Ask extends Command {
         String message = "";
         for (int i = 0; i < nodeList.getLength(); i++) {
             Element element = (Element) nodeList.item(i);
-
             Node node1 = element.getElementsByTagName("plaintext").item(0);
             message = message + node1.getTextContent() + "\n";
         }
+
         if (!message.equals("")) {
             EmbedBuilder answer = new EmbedBuilder();
             answer.setColor(Color.ORANGE);
             answer.setTitle("Your answer is:");
-            answer.setDescription(message);
+            answer.setDescription(message.substring(0,Math.min(message.length()-1,512)) + "...");
             event.getChannel().sendMessage(answer.build()).queue();
         } else {
             EmbedBuilder fail = new EmbedBuilder();
@@ -90,6 +91,7 @@ public class Ask extends Command {
             fail.setDescription("Ask me something again!");
             event.getChannel().sendMessage(fail.build()).queue();
         }
+
     }
 
 }

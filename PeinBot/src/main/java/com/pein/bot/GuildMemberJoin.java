@@ -38,6 +38,7 @@ public class GuildMemberJoin extends ListenerAdapter {
         JDA client = event.getJDA();
 
         List<TextChannel> channels = client.getTextChannelsByName("general", false);
+
         try {
             for (TextChannel channel : channels) {
                 EmbedBuilder join = new EmbedBuilder();
@@ -46,6 +47,5 @@ public class GuildMemberJoin extends ListenerAdapter {
                 channel.sendMessage(join.build()).queue();
             }
         } catch (MissingAccessException exception) { }
-
     }
 }

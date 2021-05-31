@@ -12,5 +12,6 @@ public abstract class AbstractRepository<T> {
     }
     public abstract void create(T object);
     public abstract T findById(Long id);
-    public abstract List<T> findByCategory(String name);
+    public abstract List<T> findByName(String name);
+    public abstract List<T> findAll();
 }

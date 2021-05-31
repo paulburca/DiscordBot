@@ -1,5 +1,7 @@
 package com.pein.bot;
 
+import com.pein.Entities.FeedEntity;
+import com.pein.repositories.FeedRepository;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
@@ -29,11 +31,13 @@ public class BotLauncher {
         }
     }
 
-
     public static void main(String[] args) throws LoginException {
+
         setPrefixBot();
         String token = "ODMyNjU2OTAyMzk5ODUyNTc0.YHm-Kw.ShgtTv6QhmOPYqJyCqZM-F4g5oo";
+
         // All other events will be disabled.
+
         JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES)
                 .addEventListeners(new GuildMemberJoin())
                 .addEventListeners(new GuildMemberLeave())
@@ -41,7 +45,6 @@ public class BotLauncher {
                 .setStatus(OnlineStatus.ONLINE)
                 .setActivity(Activity.watching("the world"))
                 .build();
-//        SpringApplication.run(BotLauncher.class, args);
 
     }
 
