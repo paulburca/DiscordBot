@@ -22,9 +22,9 @@ Syndication) cum ar fi ROME
 - [Filimon Dănuț-Dumitru](https://github.com/Danie83)
 <br><br>
 ## Contribuții
-- Burcă Paul: Operații pe baza de date, comenzile #addNews, #categories, #setLanguage Lucru pe feed-uri, propunerea de utilizare a api-ului StackExchange;
+- Burcă Paul: Operații pe baza de date, comenzile #addNews, #categories, #setLanguage, interacționarea cu feed-uri folosind ROME, propunerea de utilizare a api-ului StackExchange;
 - Filimon Dănuț-Dumitru: Comenzile #info, #clear, #news, #prefix, refactorizarea codului, propunerea de utilizare a api-ului Wolfram Alpha, scrierea README.md;
-- Contribuții comune: Comanda #ask, adăugarea suportului pentru limba română și engleză, eventualele modificări aduse pe tabelele din baza de date (integrarea lor în proiect atunci când e modificată structura tabelelor), verificarea cazurilor posibile de execuție pentru fiecare comandă;
+- Contribuții comune: Comanda #ask, adăugarea suportului pentru limba română și engleză, eventualele modificări aduse pe tabelele din baza de date (integrarea lor în proiect atunci când e modificată structura tabelelor), verificarea cazurilor posibile de execuție pentru fiecare comandă, evitarea pe cât posibil a potențialelor probleme ce pot apărea (bug-uri) ce fac parte din datoriile fiecărui programator, alte modificări aduse pe parcurs și reimplementări ale comenzilor (executarea pe Thread-uri a comenzilor, etc...);
 ## Descriere
 Pein este un bot pentru aplicația Discord ce utilizează DiscordJDA API.
 Pein consumă servicii REST si utilizează ROME pentru a obține diferite informații pe tema unei categorii dorite dintr-un feed RSS.
@@ -90,6 +90,9 @@ Prefixul pentru Pein este original '#':
 * Consumarea de servicii REST prin utilizarea framework-ului Spring (RestTemplate)
 <br><br>
 ## Mod de utilizare
+Dacă se dorește utilizarea codului sursă pentru a fi rulat separat (deoarece Pein nu este hostat) este nevoie de un token ce poate fi obținut pe https://discord.com/developers/applications după crearea unei noi aplicații, selectarea acesteia, navigarea în secțiunea "Bot", selectarea opțiunii "Add Bot".
+Token-ul de pe site trebuie dat ca argument la pornirea programului.
+
 Script de creare pentru baza de date a bot-ului este: [Pein.sql](https://github.com/paulburca/DiscordBot/blob/main/Pein.sql)<br>
 Fisierul persistence.xml trebuie modificat corespunzator:
 ```
@@ -100,6 +103,7 @@ Fisierul persistence.xml trebuie modificat corespunzator:
             <property name="hibernate.connection.password" value="[PASSWORD]"/>
         </properties>
 ```
+<br><br>
 ## Exemple de feed-uri
 Exemple de feed-uri ce pot fi folosite se pot gasi in fisierul [feeds.txt](https://github.com/paulburca/DiscordBot/blob/main/feeds.txt)
 
