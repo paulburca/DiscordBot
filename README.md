@@ -8,7 +8,7 @@
 * [Comenzi](#comenzi)
 * [Tehnologii](#tehnologii)
 * [Mod de utilizare](#mod-de-utilizare)
-* [Sample](#exemple-de-feed-uri)
+* [Exemplu](#exemple-de-feed-uri)
 
 ## Cerințele proiectului
 - Servicii REST, Discord API
