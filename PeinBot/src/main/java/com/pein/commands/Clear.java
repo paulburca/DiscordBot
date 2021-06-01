@@ -16,6 +16,11 @@ public class Clear extends Command {
     public void run() {
         String[] commandArguments = getArguments();
         GuildMessageReceivedEvent event = getEvent();
+
+        if(event.getAuthor().isBot()){
+            return;
+        }
+
         if (commandArguments.length != 2 || Integer.parseInt(commandArguments[1]) <= 3) {
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.RED);

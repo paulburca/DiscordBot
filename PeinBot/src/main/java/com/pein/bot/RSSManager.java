@@ -22,7 +22,7 @@ public class RSSManager {
 
     public RSSManager(String url, GuildMessageReceivedEvent event, int numberOfEntries) {
         this.event = event;
-        boolean ok = false;
+
         try {
             this.url = new URL(url).openConnection();
             inputStream = this.url.getInputStream();
@@ -32,7 +32,6 @@ public class RSSManager {
             InputSource inputSource = new InputSource(inputStream);
             syndFeedInput = new SyndFeedInput();
             syndFeed = syndFeedInput.build(inputSource);
-            ok = true;
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("ERROR: " + ex.getMessage());
