@@ -55,7 +55,7 @@ public class News extends Command {
                     feedEntity1 = feedRepository.findById(1L);
                     url = feedEntity1.getLink();
                     numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length - 1]);
-                    RSSManager rssManager1 = new RSSManager(url, event, numberOfEntries);
+                    RSSManager rssManager1 = new RSSManager(url, event, Math.min(numberOfEntries,10));
                     break;
                 }
             case 3:
@@ -76,7 +76,7 @@ public class News extends Command {
                         FeedEntity feedEntity2 = feedRepository.findById(idFeed);
                         url = feedEntity2.getLink();
                         if (url != null) {
-                            RSSManager rssManager2 = new RSSManager(url, event, numberOfEntries);
+                            RSSManager rssManager2 = new RSSManager(url, event, Math.min(numberOfEntries,10));
                         }
                     }
                 }
