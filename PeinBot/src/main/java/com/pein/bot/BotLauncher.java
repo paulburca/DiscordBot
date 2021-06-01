@@ -16,7 +16,7 @@ public class BotLauncher {
     private static Locale locale;
     private static ResourceBundle messages;
 
-    public static void setup(){
+    public static void setup() {
         Locale.setDefault(Locale.UK);
         setLocale(Locale.getDefault());
         setMessages(ResourceBundle.getBundle("Lang.Lang", getLocale()));
@@ -43,9 +43,7 @@ public class BotLauncher {
 
         setPrefixBot();
         setup();
-        String token = "ODMyNjU2OTAyMzk5ODUyNTc0.YHm-Kw.ShgtTv6QhmOPYqJyCqZM-F4g5oo";
-
-        // All other events will be disabled.
+        String token = "ODMyNjU2OTAyMzk5ODUyNTc0.YHm-Kw.rP26G6MX42rjFe5jA4XvLEsOVkA";
 
         JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES)
                 .addEventListeners(new GuildMemberJoin())

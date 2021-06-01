@@ -22,10 +22,11 @@ public class GetCategories extends Command {
         List<CategoryEntity> categories = categoryRepository.findAll();
         StringBuilder stringBuilder = new StringBuilder();
 
-        if (categories == null) {
+        if (categories.size() == 0) {
             EmbedBuilder error = new EmbedBuilder();
             error.setColor(Color.RED);
             error.setDescription(BotLauncher.getMessages().getString("no.available.categories"));
+            getEvent().getChannel().sendTyping().queue();
             getEvent().getChannel().sendMessage(error.build()).queue();
             return;
         }
@@ -34,12 +35,13 @@ public class GetCategories extends Command {
             stringBuilder.append(categoryEntity.getName()).append(",");
         }
 
-        stringBuilder.substring(0, 256);
+        stringBuilder.substring(0, Math.min(stringBuilder.length(), 256));
 
         EmbedBuilder embedCategories = new EmbedBuilder();
         embedCategories.setColor(Color.GREEN);
         embedCategories.setTitle(BotLauncher.getMessages().getString("available.categories"));
         embedCategories.setDescription(stringBuilder.toString());
+        getEvent().getChannel().sendTyping().queue();
         getEvent().getChannel().sendMessage(embedCategories.build()).queue();
     }
 }

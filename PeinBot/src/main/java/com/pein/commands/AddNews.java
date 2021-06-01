@@ -8,13 +8,16 @@ import com.pein.repositories.CategoryRepository;
 import com.pein.repositories.FeedCategoryRepository;
 import com.pein.repositories.FeedRepository;
 import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.xml.sax.InputSource;
 
 import java.awt.*;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -49,6 +52,16 @@ public class AddNews extends Command {
             syndFeedInput = new SyndFeedInput();
             syndFeed = syndFeedInput.build(inputSource);
 
+            List<FeedEntity> link = feedRepository.findByLink(getArguments()[2]);
+            if (link.size() > 0) {
+                EmbedBuilder exists = new EmbedBuilder();
+                exists.setColor(Color.RED);
+                exists.setDescription(BotLauncher.getMessages().getString("exists.link"));
+                getEvent().getChannel().sendTyping().queue();
+                getEvent().getChannel().sendMessage(exists.build()).queue();
+                return;
+            }
+
             List<String> categories = new ArrayList<>(Arrays.asList(getArguments()).subList(3, getArguments().length));
             for (String category : categories) {
                 long id;
@@ -73,13 +86,15 @@ public class AddNews extends Command {
                 EmbedBuilder added = new EmbedBuilder();
                 added.setColor(Color.BLUE);
                 added.setDescription(BotLauncher.getMessages().getString("news.success"));
+                getEvent().getChannel().sendTyping().queue();
                 getEvent().getChannel().sendMessage(added.build()).queue();
             }
 
-        } catch (Exception ex) {
+        } catch (FeedException | IOException e) {
             EmbedBuilder error = new EmbedBuilder();
             error.setColor(Color.RED);
-            error.setDescription(BotLauncher.getMessages().getString("error"));
+            error.setDescription(BotLauncher.getMessages().getString("invalid.link"));
+            getEvent().getChannel().sendTyping().queue();
             getEvent().getChannel().sendMessage(error.build()).queue();
         }
 

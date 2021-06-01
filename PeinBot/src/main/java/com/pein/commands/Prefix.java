@@ -16,11 +16,14 @@ public class Prefix extends Command {
         String[] commandArguments = getArguments();
         GuildMessageReceivedEvent event = getEvent();
 
-        if (commandArguments.length != 2 || commandArguments[1].length() != 1) {
+        if (commandArguments.length != 2 || !commandArguments[1].matches("[!#&/>]")) {
             EmbedBuilder usage = new EmbedBuilder();
-            usage.setColor(Color.ORANGE);
-            usage.setTitle(BotLauncher.getMessages().getString("another.prefix"));
-            usage.setDescription(BotLauncher.getMessages().getString("usage") + BotLauncher.getPrefix() + BotLauncher.getMessages().getString("prefix"));
+            usage.setColor(Color.RED);
+            usage.setTitle(BotLauncher.getMessages().getString("correct.usage"));
+            usage.setDescription(BotLauncher.getMessages().getString("usage") + BotLauncher.getPrefix()
+                    + BotLauncher.getMessages().getString("prefix")
+                    + "\n\n" + BotLauncher.getMessages().getString("invalid.prefix"));
+            event.getChannel().sendTyping().queue();
             event.getChannel().sendMessage(usage.build()).queue();
             return;
         }
@@ -28,9 +31,12 @@ public class Prefix extends Command {
         if (BotLauncher.getPrefix().equals(commandArguments[1])) {
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.RED);
-            usage.setTitle(BotLauncher.getMessages().getString("another.prefix"));
+            usage.setTitle(BotLauncher.getMessages().getString("correct.usage"));
             usage.setDescription(BotLauncher.getMessages().getString("usage") + BotLauncher.getPrefix()
-                    + BotLauncher.getMessages().getString("prefix") + "\n" + BotLauncher.getMessages().getString("already.prefix"));
+                    + BotLauncher.getMessages().getString("prefix") + "\n\n"
+                    + BotLauncher.getMessages().getString("already.prefix"));
+            event.getChannel().sendTyping().queue();
+            event.getChannel().sendMessage(usage.build()).queue();
             return;
         }
 
@@ -40,6 +46,7 @@ public class Prefix extends Command {
             usage.setColor(Color.GREEN);
             usage.setTitle(BotLauncher.getMessages().getString("new.prefix"));
             usage.setDescription(BotLauncher.getMessages().getString("success.prefix") + BotLauncher.getPrefix());
+            event.getChannel().sendTyping().queue();
             event.getChannel().sendMessage(usage.build()).queue();
 
             BufferedWriter fileWriter;

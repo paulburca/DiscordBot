@@ -6,6 +6,7 @@ import java.util.Objects;
 @Entity
 @NamedQueries({
         @NamedQuery(name="Feed.findName", query="SELECT f FROM FeedEntity f where f.name= :name"),
+        @NamedQuery(name="Feed.findLink", query="SELECT f FROM FeedEntity f where f.link = :link"),
         @NamedQuery(name="Feed.findId", query="SELECT f FROM FeedEntity f where f.id= :id"),
         @NamedQuery(name="Feed.findAll", query="SELECT f FROM FeedEntity f")
 })

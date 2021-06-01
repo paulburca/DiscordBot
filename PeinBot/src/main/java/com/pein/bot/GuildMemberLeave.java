@@ -27,7 +27,7 @@ public class GuildMemberLeave extends ListenerAdapter {
                 join.setDescription(user + BotLauncher.getMessages().getString("leave"));
                 channel.sendMessage(join.build()).queue();
             }
-        }catch(MissingAccessException exception){
+        } catch (MissingAccessException exception) {
 
         }
     }

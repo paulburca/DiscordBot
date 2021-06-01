@@ -45,39 +45,43 @@ public class News extends Command {
 
         switch (commandArguments.length) {
             case 1:
-                FeedEntity feedEntity = feedRepository.findById(1L);
-                url = feedEntity.getLink();
-                RSSManager rssManager = new RSSManager(url, event, numberOfEntries);
+                RSSManager rssManager = new RSSManager("https://www.news.ro/rss", event, numberOfEntries);
                 break;
             case 2:
                 FeedEntity feedEntity1;
                 if (isNumeric(commandArguments[commandArguments.length - 1])) {
-                    feedEntity1 = feedRepository.findById(1L);
-                    url = feedEntity1.getLink();
                     numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length - 1]);
-                    RSSManager rssManager1 = new RSSManager(url, event, Math.min(numberOfEntries,10));
+                    RSSManager rssManager1 = new RSSManager("https://www.news.ro/rss", event, Math.min(numberOfEntries, 10));
                     break;
                 }
             case 3:
+
                 List<CategoryEntity> categoryEntities = categoryRepository.findByName(commandArguments[1]);
                 if (categoryEntities.size() == 0) {
                     EmbedBuilder error = new EmbedBuilder();
                     error.setColor(Color.RED);
                     error.setDescription(BotLauncher.getMessages().getString("not.a.category"));
+                    event.getChannel().sendTyping().queue();
                     event.getChannel().sendMessage(error.build()).queue();
                 } else {
                     Long idCategory = categoryEntities.get(0).getId();
-                    List<FeedcategoryEntity> feedcategoryEntities = feedCategoryRepository.findById2(idCategory);
+                    List<FeedcategoryEntity> feedCategoryEntities = feedCategoryRepository.findById2(idCategory);
                     if (isNumeric(commandArguments[commandArguments.length - 1])) {
                         numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length - 1]);
                     }
-                    for (FeedcategoryEntity feedcategoryEntity : feedcategoryEntities) {
+                    int total = numberOfEntries;
+                    numberOfEntries = numberOfEntries / feedCategoryEntities.size();
+                    for (FeedcategoryEntity feedcategoryEntity : feedCategoryEntities) {
+                        if (numberOfEntries * 2 > total) {
+                            numberOfEntries = total;
+                        }
                         Long idFeed = feedcategoryEntity.getIdFeed();
                         FeedEntity feedEntity2 = feedRepository.findById(idFeed);
                         url = feedEntity2.getLink();
                         if (url != null) {
-                            RSSManager rssManager2 = new RSSManager(url, event, Math.min(numberOfEntries,10));
+                            RSSManager rssManager2 = new RSSManager(url, event, Math.min(numberOfEntries, 10));
                         }
+                        total = total - numberOfEntries;
                     }
                 }
                 break;

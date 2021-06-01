@@ -14,6 +14,10 @@ public class CommandHandler extends ListenerAdapter {
 
         String[] args = commandArguments[0].split(BotLauncher.getPrefix());
 
+        if (event.getAuthor().isBot()) {
+            return;
+        }
+
         switch (args[args.length - 1]) {
             case "clear":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "clear")) {
@@ -47,17 +51,18 @@ public class CommandHandler extends ListenerAdapter {
                 break;
             case "addNews":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "addNews")) {
-                    if(commandArguments.length>=4){
+                    if (commandArguments.length >= 4) {
                         Thread addNews = new Thread(new AddNews(commandArguments, event));
                         addNews.start();
-                    }
-                    else{
+                    } else {
 
-                            EmbedBuilder wrongFormat = new EmbedBuilder();
-                            wrongFormat.setColor(Color.RED);
-                            wrongFormat.setDescription(BotLauncher.getMessages().getString("has.structure") +
-                                    BotLauncher.getPrefix() + BotLauncher.getMessages().getString("add.news.structure"));
-                            event.getChannel().sendMessage(wrongFormat.build()).queue();
+                        EmbedBuilder wrongFormat = new EmbedBuilder();
+                        wrongFormat.setColor(Color.RED);
+                        wrongFormat.setTitle(BotLauncher.getMessages().getString("correct.usage"));
+                        wrongFormat.setDescription(BotLauncher.getMessages().getString("has.structure") +
+                                BotLauncher.getPrefix() + BotLauncher.getMessages().getString("add.news.structure"));
+                        event.getChannel().sendTyping().queue();
+                        event.getChannel().sendMessage(wrongFormat.build()).queue();
 
                     }
                 }
@@ -68,8 +73,8 @@ public class CommandHandler extends ListenerAdapter {
                     getCategories.start();
                 }
                 break;
-            case "setLang":
-                if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "setLang")) {
+            case "setLanguage":
+                if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "setLanguage")) {
                     Thread setLang = new Thread(new setLang(commandArguments, event));
                     setLang.start();
                 }

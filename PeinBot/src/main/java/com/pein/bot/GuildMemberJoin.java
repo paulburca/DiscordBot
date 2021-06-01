@@ -31,6 +31,7 @@ public class GuildMemberJoin extends ListenerAdapter {
                 join.setDescription(BotLauncher.getMessages().getString("join").replace("[member]", user));
                 channel.sendMessage(join.build()).queue();
             }
-        } catch (MissingAccessException exception) { }
+        } catch (MissingAccessException exception) {
+        }
     }
 }

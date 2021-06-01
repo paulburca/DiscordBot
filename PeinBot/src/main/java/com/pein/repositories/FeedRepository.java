@@ -1,6 +1,7 @@
 package com.pein.repositories;
 
 import com.pein.Entities.FeedEntity;
+import com.sun.syndication.feed.atom.Feed;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -24,6 +25,11 @@ public class FeedRepository extends AbstractRepository<FeedEntity> {
     public List<FeedEntity> findByName(String name) {
         TypedQuery<FeedEntity> query = entityManager.createNamedQuery("Feed.findName",FeedEntity.class);
         return query.setParameter("name", name).getResultList();
+    }
+
+    public List<FeedEntity> findByLink(String link){
+        TypedQuery<FeedEntity> query = entityManager.createNamedQuery("Feed.findLink",FeedEntity.class);
+        return query.setParameter("link", link).getResultList();
     }
 
     @Override

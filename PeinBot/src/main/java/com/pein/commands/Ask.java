@@ -5,10 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.pein.bot.BotLauncher;
-import com.sun.syndication.io.SyndFeedInput;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
@@ -24,11 +22,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
 public class Ask extends Command {
@@ -40,63 +34,84 @@ public class Ask extends Command {
     public void run() {
 
         String[] input = getArguments();
-        StringBuilder question = new StringBuilder();
         GuildMessageReceivedEvent event = getEvent();
 
         if (input.length < 3) {
             EmbedBuilder usage = new EmbedBuilder();
             usage.setColor(Color.MAGENTA);
             usage.setTitle(BotLauncher.getMessages().getString("usage"));
-            usage.setDescription(BotLauncher.getMessages().getString("usage.desc") + "\n\n" + BotLauncher.getMessages().getString("usage.desc1"));
+            usage.setDescription(BotLauncher.getPrefix() + BotLauncher.getMessages().getString("usage.desc")
+                    + "\n\n" + BotLauncher.getMessages().getString("usage.desc1"));
+            event.getChannel().sendTyping().queue();
             event.getChannel().sendMessage(usage.build()).queue();
             return;
         }
 
-        RestTemplate restTemplate = new RestTemplate();
+        StringBuilder stackQuestion = new StringBuilder();
+        StringBuilder alphaQuestion = new StringBuilder();
         for (int i = 2; i < input.length; i++) {
             if (i == input.length - 1) {
-                question.append(input[i]);
+                stackQuestion.append(input[i]);
+                alphaQuestion.append(input[i]);
             } else {
-                question.append(input[i]).append("%20");
+                stackQuestion.append(input[i]).append("%20");
+                alphaQuestion.append(input[i]).append(" ");
             }
         }
 
         switch (input[1]) {
             case "stack":
-                String urlString = "https://api.stackexchange.com/2.2/search?order=desc&sort=relevance&intitle=" + question + "&site=stackoverflow";
-                JsonParser jsonParser = new JsonParser();
+                String urlString = "https://api.stackexchange.com/2.2/search?order=desc&sort=relevance&intitle=" + stackQuestion + "&site=stackoverflow";
                 try {
                     URL url = new URL(urlString);
                     HttpURLConnection request = (HttpURLConnection) url.openConnection();
                     request.connect();
 
-                    // Convert to a JSON object to print data
-                    JsonParser jp = new JsonParser(); // from gson
-                    JsonElement root = jp.parse(new InputStreamReader(new GZIPInputStream((InputStream) request.getContent()))); // Convert the input stream to a json
-                    JsonObject rootobj = root.getAsJsonObject(); // May be an array, may be an object.
-                    JsonArray items = rootobj.get("items").getAsJsonArray();
-                    for (int count = 0; count < Math.min(items.size()-1,5); ) {
+                    JsonParser jsonParser = new JsonParser();
+                    JsonElement rootElement = jsonParser.parse(new InputStreamReader(new GZIPInputStream((InputStream) request.getContent()))); // Convert the input stream to a json
+                    JsonObject rootObject = rootElement.getAsJsonObject();
+                    JsonArray items = rootObject.get("items").getAsJsonArray();
+                    for (int count = 0; count < Math.min(items.size() - 1, 5); ) {
                         JsonObject result = items.get(count).getAsJsonObject();
-                        if (result.get("is_answered").getAsBoolean()){
+                        if (result.get("is_answered").getAsBoolean()) {
                             String title = result.get("title").getAsString();
-                            title = title.replaceAll("&quot;","\"");
+                            title = title.replaceAll("&quot;", "\"");
                             title = title.replaceAll("&#39;", "'");
-                            count++;
-                            System.out.println(title);
 
+                            String link = result.get("link").getAsString();
+                            String answer = "";
+                            try {
+                                answer = result.get("accepted_answer_id").getAsString();
+                            } catch (Exception exception) {
+                                //
+                            }
+
+                            EmbedBuilder response = new EmbedBuilder();
+                            response.setColor(Color.GREEN);
+                            response.setTitle(title.substring(0, Math.min(128, title.length())));
+                            response.setDescription("[" + BotLauncher.getMessages().getString("relevant") + "](" + link + ")");
+
+                            if (answer.length() != 0) {
+                                response.addField(BotLauncher.getMessages().getString("answer")
+                                        , "[" + BotLauncher.getMessages().getString("answer.view")
+                                                + "](" + link + "/#" + answer + ")", false);
+                            } else {
+                                response.addField(BotLauncher.getMessages().getString("no.answer"), ":(", false);
+                            }
+
+                            event.getChannel().sendTyping().queue();
+                            event.getChannel().sendMessage(response.build()).queue();
+
+                            count++;
                         }
                     }
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-//                ResponseEntity<String> stackResponse = restTemplate.getForEntity(url,String.class);
-
                 break;
             case "alpha":
-                ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input=" + question + "&appid=VK9P9V-P7PJWEKPHA", String.class);
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input=" + alphaQuestion + "&appid=VK9P9V-P7PJWEKPHA", String.class);
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = null;
 
@@ -131,16 +146,23 @@ public class Ask extends Command {
                     answer.setColor(Color.ORANGE);
                     answer.setTitle(BotLauncher.getMessages().getString("answer.is"));
                     answer.setDescription(message.substring(0, Math.min(message.length() - 1, 512)) + "...");
+                    event.getChannel().sendTyping().queue();
                     event.getChannel().sendMessage(answer.build()).queue();
                 } else {
                     EmbedBuilder fail = new EmbedBuilder();
                     fail.setColor(Color.RED);
                     fail.setTitle(BotLauncher.getMessages().getString("no.answers"));
                     fail.setDescription(BotLauncher.getMessages().getString("ask.me"));
+                    event.getChannel().sendTyping().queue();
                     event.getChannel().sendMessage(fail.build()).queue();
                 }
                 break;
             default:
+                EmbedBuilder defaultCase = new EmbedBuilder();
+                defaultCase.setColor(Color.red);
+                defaultCase.setDescription(BotLauncher.getMessages().getString("ask.description"));
+                event.getChannel().sendTyping().queue();
+                event.getChannel().sendMessage(defaultCase.build()).queue();
                 break;
         }
 
