@@ -1,11 +1,14 @@
 package com.pein.commands;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.pein.bot.BotLauncher;
 import com.sun.syndication.io.SyndFeedInput;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
@@ -19,10 +22,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -55,23 +57,42 @@ public class Ask extends Command {
             if (i == input.length - 1) {
                 question.append(input[i]);
             } else {
-                question.append(input[i]).append(" ");
+                question.append(input[i]).append("%20");
             }
         }
 
-        switch(input[1]){
+        switch (input[1]) {
             case "stack":
-                String url = "https://api.stackexchange.com/2.2/search?order=desc&sort=activity&intitle="+question+"&site=stackoverflow";
-                ResponseEntity<String> stackResponse = restTemplate.getForEntity(url,String.class);
-
-                byte[] bytes = stackResponse.getBody().getBytes(StandardCharsets.UTF_8);
-
+                String urlString = "https://api.stackexchange.com/2.2/search?order=desc&sort=relevance&intitle=" + question + "&site=stackoverflow";
+                JsonParser jsonParser = new JsonParser();
                 try {
-                    GZIPInputStream gzipInputStream = new GZIPInputStream(new ByteArrayInputStream(bytes));
+                    URL url = new URL(urlString);
+                    HttpURLConnection request = (HttpURLConnection) url.openConnection();
+                    request.connect();
+
+                    // Convert to a JSON object to print data
+                    JsonParser jp = new JsonParser(); // from gson
+                    JsonElement root = jp.parse(new InputStreamReader(new GZIPInputStream((InputStream) request.getContent()))); // Convert the input stream to a json
+                    JsonObject rootobj = root.getAsJsonObject(); // May be an array, may be an object.
+                    JsonArray items = rootobj.get("items").getAsJsonArray();
+                    for (int count = 0; count < Math.min(items.size()-1,5); ) {
+                        JsonObject result = items.get(count).getAsJsonObject();
+                        if (result.get("is_answered").getAsBoolean()){
+                            String title = result.get("title").getAsString();
+                            title = title.replaceAll("&quot;","\"");
+                            title = title.replaceAll("&#39;", "'");
+                            count++;
+                            System.out.println(title);
+
+                        }
+                    }
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
+//                ResponseEntity<String> stackResponse = restTemplate.getForEntity(url,String.class);
 
                 break;
             case "alpha":
