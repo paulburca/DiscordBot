@@ -1,7 +1,6 @@
 package com.pein.repositories;
 
-import com.pein.Entities.CategoryEntity;
-import com.pein.Entities.FeedEntity;
+import com.pein.entities.CategoryEntity;
 
 import javax.persistence.TypedQuery;
 import java.util.List;

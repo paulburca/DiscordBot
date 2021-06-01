@@ -1,7 +1,6 @@
 package com.pein.repositories;
 
-import com.pein.Entities.FeedEntity;
-import com.pein.Entities.FeedcategoryEntity;
+import com.pein.entities.FeedcategoryEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;

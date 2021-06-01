@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -111,7 +110,9 @@ public class Ask extends Command {
                 break;
             case "alpha":
                 RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input=" + alphaQuestion + "&appid=VK9P9V-P7PJWEKPHA", String.class);
+                ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input="
+                        + alphaQuestion.toString().replaceAll("\\+","plus")
+                        + "&appid=VK9P9V-P7PJWEKPHA", String.class);
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = null;
 
@@ -122,6 +123,8 @@ public class Ask extends Command {
                 }
 
                 InputSource is = new InputSource(new StringReader(response.getBody()));
+
+                System.out.println(response.getBody());
 
                 Document document = null;
 
@@ -134,28 +137,30 @@ public class Ask extends Command {
                 Element root = document.getDocumentElement();
 
                 NodeList nodeList = root.getElementsByTagName("pod");
-                StringBuilder message = new StringBuilder();
-                for (int i = 0; i < nodeList.getLength(); i++) {
-                    Element element = (Element) nodeList.item(i);
-                    Node node1 = element.getElementsByTagName("plaintext").item(0);
-                    message.append(node1.getTextContent()).append("\n");
-                }
-
-                if (!message.toString().equals("")) {
-                    EmbedBuilder answer = new EmbedBuilder();
-                    answer.setColor(Color.ORANGE);
-                    answer.setTitle(BotLauncher.getMessages().getString("answer.is"));
-                    answer.setDescription(message.substring(0, Math.min(message.length() - 1, 512)) + "...");
-                    event.getChannel().sendTyping().queue();
-                    event.getChannel().sendMessage(answer.build()).queue();
-                } else {
+                if(root.getAttribute("success").equals("false")){
                     EmbedBuilder fail = new EmbedBuilder();
                     fail.setColor(Color.RED);
                     fail.setTitle(BotLauncher.getMessages().getString("no.answers"));
                     fail.setDescription(BotLauncher.getMessages().getString("ask.me"));
                     event.getChannel().sendTyping().queue();
                     event.getChannel().sendMessage(fail.build()).queue();
+                    break;
                 }
+
+                EmbedBuilder answer = new EmbedBuilder();
+                answer.setTitle(BotLauncher.getMessages().getString("answer.is"));
+                answer.setColor(Color.ORANGE);
+
+                for (int i = 0; i < nodeList.getLength(); i++) {
+                    Element element = (Element) nodeList.item(i);
+                    if (!element.getElementsByTagName("plaintext").item(0).getTextContent().equals("")) {
+                        answer.addField(element.getAttribute("title"),
+                                element.getElementsByTagName("plaintext").item(0).getTextContent(), false);
+                    }
+                }
+
+                event.getChannel().sendTyping().queue();
+                event.getChannel().sendMessage(answer.build()).queue();
                 break;
             default:
                 EmbedBuilder defaultCase = new EmbedBuilder();

@@ -8,8 +8,8 @@ import java.awt.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class setLang extends Command {
-    public setLang(String[] arguments, GuildMessageReceivedEvent event) {
+public class Language extends Command {
+    public Language(String[] arguments, GuildMessageReceivedEvent event) {
         super(arguments, event);
     }
 

@@ -2,8 +2,7 @@ package com.pein.bot;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
+
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.exceptions.MissingAccessException;
@@ -11,7 +10,6 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
 import java.util.List;
-import java.util.Random;
 
 public class GuildMemberJoin extends ListenerAdapter {
 
@@ -32,6 +30,7 @@ public class GuildMemberJoin extends ListenerAdapter {
                 channel.sendMessage(join.build()).queue();
             }
         } catch (MissingAccessException exception) {
+            //
         }
     }
 }

@@ -3,10 +3,10 @@ package com.pein.bot;
 import java.util.Date;
 
 public class FeedMessage {
-    private String entryTitle;
-    private String entryDescription;
-    private String entryLink;
-    private String entryAuthor;
+    private final String entryTitle;
+    private final String entryDescription;
+    private final String entryLink;
+    private final String entryAuthor;
     private Date entryPublishedDate;
 
     public FeedMessage(String title, String description, String link, String author, Date publishedDate) {
@@ -22,36 +22,12 @@ public class FeedMessage {
         return entryTitle;
     }
 
-    public void setEntryTitle(String entryTitle) {
-        this.entryTitle = entryTitle;
-    }
-
     public String getEntryDescription() {
         return entryDescription;
     }
 
-    public void setEntryDescription(String entryDescription) {
-        this.entryDescription = entryDescription;
-    }
-
     public String getEntryLink() {
         return entryLink;
-    }
-
-    public void setEntryLink(String entryLink) {
-        this.entryLink = entryLink;
-    }
-
-    public String getEntryAuthor() {
-        return entryAuthor;
-    }
-
-    public void setEntryAuthor(String entryAuthor) {
-        this.entryAuthor = entryAuthor;
-    }
-
-    public Date getEntryPublishedDate() {
-        return entryPublishedDate;
     }
 
     public void setEntryPublishedDate(Date entryPublishedDate) {

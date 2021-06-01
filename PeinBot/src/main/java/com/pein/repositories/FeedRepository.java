@@ -1,7 +1,6 @@
 package com.pein.repositories;
 
-import com.pein.Entities.FeedEntity;
-import com.sun.syndication.feed.atom.Feed;
+import com.pein.entities.FeedEntity;
 
 import javax.persistence.TypedQuery;
 import java.util.List;

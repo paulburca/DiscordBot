@@ -1,8 +1,8 @@
 package com.pein.commands;
 
-import com.pein.Entities.CategoryEntity;
-import com.pein.Entities.FeedEntity;
-import com.pein.Entities.FeedcategoryEntity;
+import com.pein.entities.CategoryEntity;
+import com.pein.entities.FeedEntity;
+import com.pein.entities.FeedcategoryEntity;
 import com.pein.bot.BotLauncher;
 import com.pein.repositories.CategoryRepository;
 import com.pein.repositories.FeedCategoryRepository;
@@ -17,7 +17,6 @@ import org.xml.sax.InputSource;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;

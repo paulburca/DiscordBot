@@ -43,7 +43,7 @@ public class BotLauncher {
 
         setPrefixBot();
         setup();
-        String token = "ODMyNjU2OTAyMzk5ODUyNTc0.YHm-Kw.rP26G6MX42rjFe5jA4XvLEsOVkA";
+        String token = args[0];
 
         JDABuilder.create(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.DIRECT_MESSAGES)
                 .addEventListeners(new GuildMemberJoin())

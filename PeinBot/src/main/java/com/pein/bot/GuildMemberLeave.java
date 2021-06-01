@@ -28,7 +28,7 @@ public class GuildMemberLeave extends ListenerAdapter {
                 channel.sendMessage(join.build()).queue();
             }
         } catch (MissingAccessException exception) {
-
+            //
         }
     }
 

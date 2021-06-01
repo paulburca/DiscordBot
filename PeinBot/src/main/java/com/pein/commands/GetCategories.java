@@ -1,6 +1,6 @@
 package com.pein.commands;
 
-import com.pein.Entities.CategoryEntity;
+import com.pein.entities.CategoryEntity;
 import com.pein.bot.BotLauncher;
 import com.pein.repositories.CategoryRepository;
 import net.dv8tion.jda.api.EmbedBuilder;

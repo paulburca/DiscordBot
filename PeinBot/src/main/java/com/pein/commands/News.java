@@ -1,8 +1,8 @@
 package com.pein.commands;
 
-import com.pein.Entities.CategoryEntity;
-import com.pein.Entities.FeedEntity;
-import com.pein.Entities.FeedcategoryEntity;
+import com.pein.entities.CategoryEntity;
+import com.pein.entities.FeedEntity;
+import com.pein.entities.FeedcategoryEntity;
 import com.pein.bot.BotLauncher;
 import com.pein.bot.RSSManager;
 import com.pein.repositories.CategoryRepository;
@@ -45,13 +45,13 @@ public class News extends Command {
 
         switch (commandArguments.length) {
             case 1:
-                RSSManager rssManager = new RSSManager("https://www.news.ro/rss", event, numberOfEntries);
+                new RSSManager("https://www.news.ro/rss", event, numberOfEntries);
                 break;
             case 2:
-                FeedEntity feedEntity1;
+
                 if (isNumeric(commandArguments[commandArguments.length - 1])) {
                     numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length - 1]);
-                    RSSManager rssManager1 = new RSSManager("https://www.news.ro/rss", event, Math.min(numberOfEntries, 10));
+                    new RSSManager("https://www.news.ro/rss", event, Math.min(numberOfEntries, 10));
                     break;
                 }
             case 3:
@@ -79,7 +79,7 @@ public class News extends Command {
                         FeedEntity feedEntity2 = feedRepository.findById(idFeed);
                         url = feedEntity2.getLink();
                         if (url != null) {
-                            RSSManager rssManager2 = new RSSManager(url, event, Math.min(numberOfEntries, 10));
+                            new RSSManager(url, event, Math.min(numberOfEntries, 10));
                         }
                         total = total - numberOfEntries;
                     }

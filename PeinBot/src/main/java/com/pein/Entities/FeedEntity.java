@@ -1,4 +1,4 @@
-package com.pein.Entities;
+package com.pein.entities;
 
 import javax.persistence.*;
 import java.util.Objects;

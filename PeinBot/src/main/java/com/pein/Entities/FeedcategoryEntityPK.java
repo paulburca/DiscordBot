@@ -1,4 +1,4 @@
-package com.pein.Entities;
+package com.pein.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

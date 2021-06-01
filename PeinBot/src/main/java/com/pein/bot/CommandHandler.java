@@ -75,7 +75,7 @@ public class CommandHandler extends ListenerAdapter {
                 break;
             case "setLanguage":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "setLanguage")) {
-                    Thread setLang = new Thread(new setLang(commandArguments, event));
+                    Thread setLang = new Thread(new Language(commandArguments, event));
                     setLang.start();
                 }
             default:

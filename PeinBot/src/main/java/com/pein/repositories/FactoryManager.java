@@ -21,8 +21,4 @@ public class FactoryManager {
         return factory.createEntityManager();
     }
 
-    public  void close(){
-        factory.close();
-    }
-
 }
