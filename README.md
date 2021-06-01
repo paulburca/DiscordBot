@@ -22,28 +22,28 @@ Syndication) cum ar fi ROME
 - [Filimon Dănuț-Dumitru](https://github.com/Danie83)
 <br><br>
 ## Contribuții
-- Burcă Paul: Operații pe baza de date, comenzile #addNews, #categories, #setLanguage, interacționarea cu feed-uri folosind ROME, propunerea de utilizare a api-ului StackExchange;
-- Filimon Dănuț-Dumitru: Comenzile #info, #clear, #news, #prefix, refactorizarea codului, propunerea de utilizare a api-ului Wolfram Alpha, scrierea README.md;
-- Contribuții comune: Comanda #ask, adăugarea suportului pentru limba română și engleză, eventualele modificări aduse pe tabelele din baza de date (integrarea lor în proiect atunci când e modificată structura tabelelor), verificarea cazurilor posibile de execuție pentru fiecare comandă, evitarea pe cât posibil a potențialelor probleme ce pot apărea (bug-uri) ce fac parte din datoriile fiecărui programator, alte modificări aduse pe parcurs și reimplementări ale comenzilor (executarea pe Thread-uri a comenzilor, etc...);
+- Burcă Paul: Operații pe baza de date, comenzile #addNews, #categories, #setLanguage, interacționarea cu feed-uri folosind ROME, propunerea de utilizare a API-ului StackExchange (împreună cu implementarea acestuia);
+- Filimon Dănuț-Dumitru: Comenzile #info, #clear, #news, #prefix, refactorizarea codului, propunerea de utilizare a API-ului Wolfram Alpha (împreună cu implementarea acestuia), scrierea README.md;
+- Contribuții comune: Comanda #ask; adăugarea suportului pentru limba română și engleză; eventualele modificări aduse pe tabelele din baza de date (integrarea lor în proiect atunci când e modificată structura tabelelor); verificarea cazurilor posibile de execuție pentru fiecare comandă, evitarea pe cât posibil a potențialelor probleme ce pot apărea (bug-uri), task ce face parte din datoria fiecărui programator; alte modificări aduse pe parcurs și reimplementări ale comenzilor (executarea pe Thread-uri a comenzilor, etc...);
 ## Descriere
 Pein este un bot pentru aplicația Discord ce utilizează DiscordJDA API.
 Pein consumă servicii REST si utilizează ROME pentru a obține diferite informații pe tema unei categorii dorite dintr-un feed RSS.
 Acest bot este capabil să raspundă la întrebări simple și să ofere informații pe diferite subiecte prin utilizarea API-urilor Wolfram Alpha și StackExchange.
 <br><br>
 ## Comenzi
-Prefixul pentru Pein este original '#':
-* #info - Afișează informații referitoare la funcționalitățile puse la dispoziție de către Pein (modul de utilizare al comenzilor, creatorii lui Pein)
-* #clear [4-100] - Șterge de la 4 la 100 mesaje
-* #prefix [!#&/>] - Permite schimbarea prefix-ului utilizat de Pein: { !, #, &, /, >}
+Prefixul setat pentru Pein este '#':
+* #info - Afișează informații referitoare la funcționalitățile puse la dispoziție de către Pein (modul de utilizare al comenzilor, creatorii lui Pein);
+* #clear [4-100] - Șterge de la 4 la 100 mesaje;
+* #prefix [!#&/>] - Permite schimbarea prefix-ului utilizat de Pein: { !, #, &, /, >};
 * #news {1-10} | [categorie] {1-10} 
-  - Comanda simpla #news va afișa 3 mesaje conținând informații despre știri de pe un feed predefinit
+  - Comanda simplă #news va afișa 3 mesaje conținând informații despre știri de pe un feed predefinit
   - Comanda #news {1-10} va afișa {1-10} mesaje conținând informații despre știri de pe un feed predefinit
   - Comanda #news [categorie] va afișa 3 mesaje conținând informații despre știri de pe un feed care are setată acea categorie
   - Comanda #news [categorie] {1-10} va afișa {1-10} mesaje conținând informații despre știri de pe un feed care are setată acea categorie
-* #categories - Afișează categoriile disponibile
-* #addNews [nume] [link] [categorii] - Adaugă un feed nou cu un nume specific și mai multe categorii
-* #ask [stack | alpha] [întrebare] - Răspunde sau oferă informații utilizatorului în funcție de opțiunea selectată (stack sau alpha) pentru o întrebare simplă
-* #setLanguage [ro | en] - Permite schimbarea limbii folosite de către Pein (Nu includ mesajele primite de la feed-uri și de la API-uri)
+* #categories - Afișează categoriile disponibile;
+* #addNews [nume] [link] [categorii] - Adaugă un feed nou cu un nume specific și mai multe categorii;
+* #ask [stack | alpha] [întrebare] - Răspunde sau oferă informații utilizatorului în funcție de opțiunea selectată (stack sau alpha) pentru o întrebare simplă;
+* #setLanguage [ro | en] - Permite schimbarea limbii folosite de către Pein (Nu include mesajele primite de la feed-uri și de la API-uri);
 <br><br>
 ## Tehnologii
 * [Java Discord API](https://github.com/DV8FromTheWorld/JDA)
@@ -90,11 +90,12 @@ Prefixul pentru Pein este original '#':
 * Consumarea de servicii REST prin utilizarea framework-ului Spring (RestTemplate)
 <br><br>
 ## Mod de utilizare
+Token-ul folosit pentru testarea bot-ului Pein nu poate fi făcut public deoarece este cheia esențială pentru controlarea bot-ului.
 Dacă se dorește utilizarea codului sursă pentru a fi rulat separat (deoarece Pein nu este hostat) este nevoie de un token ce poate fi obținut pe https://discord.com/developers/applications după crearea unei noi aplicații, selectarea acesteia, navigarea în secțiunea "Bot", selectarea opțiunii "Add Bot".
 Token-ul de pe site trebuie dat ca argument la pornirea programului.
 
-Script de creare pentru baza de date a bot-ului este: [Pein.sql](https://github.com/paulburca/DiscordBot/blob/main/Pein.sql)<br>
-Fisierul persistence.xml trebuie modificat corespunzator:
+Scriptul de creare pentru baza de date a bot-ului este: [Pein.sql](https://github.com/paulburca/DiscordBot/blob/main/Pein.sql)<br>
+Fișierul persistence.xml trebuie modificat corespunzător:
 ```
         <properties>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
@@ -105,5 +106,5 @@ Fisierul persistence.xml trebuie modificat corespunzator:
 ```
 <br><br>
 ## Exemple de feed-uri
-Exemple de feed-uri ce pot fi folosite se pot gasi in fisierul [feeds.txt](https://github.com/paulburca/DiscordBot/blob/main/feeds.txt)
+Exemple de feed-uri ce pot fi folosite se pot găsi în fișierul [feeds.txt](https://github.com/paulburca/DiscordBot/blob/main/feeds.txt).
 
