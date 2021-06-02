@@ -124,8 +124,6 @@ public class Ask extends Command {
 
                 InputSource is = new InputSource(new StringReader(response.getBody()));
 
-                System.out.println(response.getBody());
-
                 Document document = null;
 
                 try {
