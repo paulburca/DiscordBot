@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.xml.sax.InputSource;
 
+import java.awt.*;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -34,8 +35,12 @@ public class RSSManager {
             syndFeedInput = new SyndFeedInput();
             syndFeed = syndFeedInput.build(inputSource);
         } catch (Exception ex) {
-            ex.printStackTrace();
-            System.out.println("ERROR: " + ex.getMessage());
+            EmbedBuilder error = new EmbedBuilder();
+            error.setColor(Color.red);
+            error.setDescription(BotLauncher.getMessages().getString("error"));
+            event.getChannel().sendTyping().queue();
+            event.getChannel().sendMessage(error.build()).queue();
+            return;
         }
         List<SyndEntry> res = syndFeed.getEntries();
         for (int i = 0; i < numberOfEntries; i++) {
