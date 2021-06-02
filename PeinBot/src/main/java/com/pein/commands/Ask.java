@@ -111,7 +111,7 @@ public class Ask extends Command {
             case "alpha":
                 RestTemplate restTemplate = new RestTemplate();
                 ResponseEntity<String> response = restTemplate.getForEntity("https://api.wolframalpha.com/v2/query?input="
-                        + alphaQuestion.toString().replaceAll("\\+","plus")
+                        + alphaQuestion.toString().replaceAll("\\+", "plus")
                         + "&appid=VK9P9V-P7PJWEKPHA", String.class);
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder = null;
@@ -137,7 +137,7 @@ public class Ask extends Command {
                 Element root = document.getDocumentElement();
 
                 NodeList nodeList = root.getElementsByTagName("pod");
-                if(root.getAttribute("success").equals("false")){
+                if (root.getAttribute("success").equals("false")) {
                     EmbedBuilder fail = new EmbedBuilder();
                     fail.setColor(Color.RED);
                     fail.setTitle(BotLauncher.getMessages().getString("no.answers"));

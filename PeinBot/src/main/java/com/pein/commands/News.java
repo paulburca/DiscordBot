@@ -4,7 +4,7 @@ import com.pein.entities.CategoryEntity;
 import com.pein.entities.FeedEntity;
 import com.pein.entities.FeedcategoryEntity;
 import com.pein.bot.BotLauncher;
-import com.pein.bot.RSSManager;
+import com.pein.rss.RSSManager;
 import com.pein.repositories.CategoryRepository;
 import com.pein.repositories.FeedCategoryRepository;
 import com.pein.repositories.FeedRepository;

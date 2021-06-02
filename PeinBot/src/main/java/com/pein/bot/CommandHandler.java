@@ -71,7 +71,7 @@ public class CommandHandler extends ListenerAdapter {
                 break;
             case "categories":
                 if (commandArguments[0].equalsIgnoreCase(BotLauncher.getPrefix() + "categories")) {
-                    Thread getCategories = new Thread(new GetCategories(commandArguments, event));
+                    Thread getCategories = new Thread(new Categories(commandArguments, event));
                     getCategories.start();
                 }
                 break;
@@ -83,15 +83,15 @@ public class CommandHandler extends ListenerAdapter {
                 break;
             default:
                 char[] array = firstArgument.toCharArray();
-                    if(String.valueOf(array[0]).equals(BotLauncher.getPrefix())) {
-                        EmbedBuilder invalid = new EmbedBuilder();
-                        invalid.setColor(Color.RED);
-                        invalid.setTitle(BotLauncher.getMessages().getString("invalid.command"));
-                        invalid.setDescription(BotLauncher.getMessages().getString("redirect.info")
-                                + BotLauncher.getPrefix() + "info");
-                        event.getChannel().sendTyping().queue();
-                        event.getChannel().sendMessage(invalid.build()).queue();
-                    }
+                if (String.valueOf(array[0]).equals(BotLauncher.getPrefix())) {
+                    EmbedBuilder invalid = new EmbedBuilder();
+                    invalid.setColor(Color.RED);
+                    invalid.setTitle(BotLauncher.getMessages().getString("invalid.command"));
+                    invalid.setDescription(BotLauncher.getMessages().getString("redirect.info")
+                            + BotLauncher.getPrefix() + "info");
+                    event.getChannel().sendTyping().queue();
+                    event.getChannel().sendMessage(invalid.build()).queue();
+                }
                 break;
         }
     }
