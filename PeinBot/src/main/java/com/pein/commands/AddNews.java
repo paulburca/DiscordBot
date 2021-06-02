@@ -82,12 +82,13 @@ public class AddNews extends Command {
                 feedcategoryEntity.setIdFeed(feedEntity.getId());
                 feedCategoryRepository.create(feedcategoryEntity);
 
-                EmbedBuilder added = new EmbedBuilder();
-                added.setColor(Color.BLUE);
-                added.setDescription(BotLauncher.getMessages().getString("news.success"));
-                getEvent().getChannel().sendTyping().queue();
-                getEvent().getChannel().sendMessage(added.build()).queue();
             }
+
+            EmbedBuilder added = new EmbedBuilder();
+            added.setColor(Color.BLUE);
+            added.setDescription(BotLauncher.getMessages().getString("news.success"));
+            getEvent().getChannel().sendTyping().queue();
+            getEvent().getChannel().sendMessage(added.build()).queue();
 
         } catch (FeedException | IOException e) {
             EmbedBuilder error = new EmbedBuilder();

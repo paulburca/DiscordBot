@@ -12,6 +12,8 @@ public class CommandHandler extends ListenerAdapter {
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         String[] commandArguments = event.getMessage().getContentRaw().split("\\s+");
 
+        String firstArgument = commandArguments[0];
+
         String[] args = commandArguments[0].split(BotLauncher.getPrefix());
 
         if (event.getAuthor().isBot()) {
@@ -78,7 +80,18 @@ public class CommandHandler extends ListenerAdapter {
                     Thread setLang = new Thread(new Language(commandArguments, event));
                     setLang.start();
                 }
+                break;
             default:
+                char[] array = firstArgument.toCharArray();
+                    if(String.valueOf(array[0]).equals(BotLauncher.getPrefix())) {
+                        EmbedBuilder invalid = new EmbedBuilder();
+                        invalid.setColor(Color.RED);
+                        invalid.setTitle(BotLauncher.getMessages().getString("invalid.command"));
+                        invalid.setDescription(BotLauncher.getMessages().getString("redirect.info")
+                                + BotLauncher.getPrefix() + "info");
+                        event.getChannel().sendTyping().queue();
+                        event.getChannel().sendMessage(invalid.build()).queue();
+                    }
                 break;
         }
     }

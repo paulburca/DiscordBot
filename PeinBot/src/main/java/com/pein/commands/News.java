@@ -70,7 +70,12 @@ public class News extends Command {
                         numberOfEntries = Integer.parseInt(commandArguments[commandArguments.length - 1]);
                     }
                     int total = numberOfEntries;
-                    numberOfEntries = numberOfEntries / feedCategoryEntities.size();
+                    if (numberOfEntries < feedCategoryEntities.size()) {
+                        numberOfEntries = 1;
+                    } else {
+                        numberOfEntries = numberOfEntries / feedCategoryEntities.size();
+                    }
+
                     for (FeedcategoryEntity feedcategoryEntity : feedCategoryEntities) {
                         if (numberOfEntries * 2 > total) {
                             numberOfEntries = total;
@@ -82,6 +87,9 @@ public class News extends Command {
                             new RSSManager(url, event, Math.min(numberOfEntries, 10));
                         }
                         total = total - numberOfEntries;
+                        if (total <= 0) {
+                            break;
+                        }
                     }
                 }
                 break;
