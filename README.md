@@ -26,7 +26,7 @@ Syndication) cum ar fi ROME
 - Filimon Dănuț-Dumitru: Comenzile #info, #clear, #news, #prefix, refactorizarea codului, propunerea de utilizare a API-ului Wolfram Alpha (împreună cu implementarea acestuia), scrierea README.md;
 - Contribuții comune: Comanda #ask; adăugarea suportului pentru limba română și engleză; eventualele modificări aduse pe tabelele din baza de date (integrarea lor în proiect atunci când e modificată structura tabelelor); verificarea cazurilor posibile de execuție pentru fiecare comandă, evitarea pe cât posibil a potențialelor probleme ce pot apărea (bug-uri), task ce face parte din datoria fiecărui programator; alte modificări aduse pe parcurs și reimplementări ale comenzilor (executarea pe Thread-uri a comenzilor, etc...);
 ## Descriere
-Pein este un bot pentru aplicația Discord ce utilizează DiscordJDA API.
+Pein este un bot pentru aplicația Discord ce utilizează DiscordJDA.
 Pein consumă servicii REST si utilizează ROME pentru a obține diferite informații pe tema unei categorii dorite dintr-un feed RSS.
 Acest bot este capabil să raspundă la întrebări simple și să ofere informații pe diferite subiecte prin utilizarea API-urilor Wolfram Alpha și StackExchange.
 <br><br>
@@ -44,6 +44,7 @@ Prefixul setat pentru Pein este '#':
 * #addNews [nume] [link] [categorii] - Adaugă un feed nou cu un nume specific și mai multe categorii;
 * #ask [stack | alpha] [întrebare] - Răspunde sau oferă informații utilizatorului în funcție de opțiunea selectată (stack sau alpha) pentru o întrebare simplă;
 * #setLanguage [ro | en] - Permite schimbarea limbii folosite de către Pein (Nu include mesajele primite de la feed-uri și de la API-uri);
+  - Limba folosită de Pein este setată pe engleză
 <br><br>
 ## Tehnologii
 * [Java Discord API](https://github.com/DV8FromTheWorld/JDA)
