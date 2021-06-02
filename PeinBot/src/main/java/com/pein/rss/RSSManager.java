@@ -34,7 +34,7 @@ public class RSSManager {
             InputSource inputSource = new InputSource(inputStream);
             syndFeedInput = new SyndFeedInput();
             syndFeed = syndFeedInput.build(inputSource);
-        } catch (Exception ex) {
+        } catch (Exception exception) {
             EmbedBuilder error = new EmbedBuilder();
             error.setColor(Color.red);
             error.setDescription(BotLauncher.getMessages().getString("error"));
@@ -42,13 +42,13 @@ public class RSSManager {
             event.getChannel().sendMessage(error.build()).queue();
             return;
         }
-        List<SyndEntry> res = syndFeed.getEntries();
+        List<SyndEntry> result = syndFeed.getEntries();
         for (int i = 0; i < numberOfEntries; i++) {
-            FeedMessage feedMessage = new FeedMessage((res.get(i)).getTitle(),
-                    (res.get(i)).getDescription().getValue(),
-                    (res.get(i)).getLink(),
-                    (res.get(i)).getAuthor(),
-                    (res.get(i)).getPublishedDate());
+            FeedMessage feedMessage = new FeedMessage((result.get(i)).getTitle(),
+                    (result.get(i)).getDescription().getValue(),
+                    (result.get(i)).getLink(),
+                    (result.get(i)).getAuthor(),
+                    (result.get(i)).getPublishedDate());
             EmbedBuilder feedEmbed = new EmbedBuilder();
             feedEmbed.setTitle(feedMessage.getEntryTitle());
             feedEmbed.setDescription(BotLauncher.getMessages().getString("check.article") + feedMessage.getEntryLink() + ")\n"

@@ -35,12 +35,12 @@ public class Categories extends Command {
             stringBuilder.append(categoryEntity.getName()).append(" ");
         }
 
-        stringBuilder.substring(0, Math.min(stringBuilder.length(), 256));
+        String message = stringBuilder.substring(0, Math.min(stringBuilder.length(), 256));
 
         EmbedBuilder embedCategories = new EmbedBuilder();
         embedCategories.setColor(Color.GREEN);
         embedCategories.setTitle(BotLauncher.getMessages().getString("available.categories"));
-        embedCategories.setDescription(stringBuilder.toString());
+        embedCategories.setDescription(message);
         getEvent().getChannel().sendTyping().queue();
         getEvent().getChannel().sendMessage(embedCategories.build()).queue();
     }
